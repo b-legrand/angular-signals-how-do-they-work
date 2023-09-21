@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@types/reveal.js": "^4.4.2",
@@ -15,6 +16,7 @@
     "vite": "^4.3.9"
   },
   "dependencies": {
+    "gh-pages": "^6.0.0",
     "reveal.js": "^4.5.0"
   }
 }
