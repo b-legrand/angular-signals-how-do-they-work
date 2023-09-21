@@ -1,4 +1,6 @@
-# Angular signals: how do they work ???
+# Angular signals: how do they work ??? 
+
+<img src="angular.svg" height="90vh" alt="logo angular"/>
 
 
 <img src="icp-magnets.webp" alt="Insane Clown Possee">
@@ -27,10 +29,14 @@
 ### Bref historique
 
 - signals in computer science
+~
+existe depuis aussi longtemps que l'informatique
+mention de knockout.js
 
 
 
 ## Le passé
+- comment on faisait avant ?
 
 
 ### push vs pull
@@ -58,7 +64,9 @@
 
 
 
-## Signals ( le présent )
+## Le présent
+
+- Signals API
 
 
 ### Who's got signals already ?
@@ -67,10 +75,15 @@
 - Preact
 - Astro
 - Qwik
-- 
+- Marko
+- Knockout
+- Angular
 
 
 ### RFC
+- Avril 2023
+- https://github.com/angular/angular/discussions/49685
+- découpée en 4
 
 
 ### a Signal, api
@@ -81,11 +94,13 @@ type Signal<T> = {
 }
 ```
 
+
 ### signal(), usage
 
 ```typescript
 const counter = signal(0);
 ```
+
 
 ### WritableSignal
 
@@ -95,6 +110,7 @@ type WritableSignal<T> = {
   set(t: T): void
 }
 ```
+
 
 ### WritableSignal, usage
 
@@ -108,11 +124,28 @@ type WritableSignal<T> = {
 ### avantages
 
 
+### intégration avec angular: Signal-based components
+
+- https://github.com/angular/angular/discussions/49682
+
+
 
 ## Le futur.
 
 
+### Statut actuel
+
+- developer preview en v16
+
+
 ### où et quand utiliser signals vs rxjs ?
+
+- why not both ?
+
+### interopérabilité 
+
+- toSignal
+- toObservable
 
 
 ### avantages, inconvénients 
@@ -123,6 +156,11 @@ type WritableSignal<T> = {
 
 ### roadmap et librairies à cotê
 
+#### NgRx SignalStore
+
+```
+https://github.com/ngrx/platform/discussions/3796
+```
 
 
 ### Sources
