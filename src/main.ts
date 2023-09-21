@@ -16,7 +16,7 @@ deck.initialize({
   progress: false,
   controls: false,
   slideNumber: "c/t",
-  showSlideNumber: "speaker",
+  showSlideNumber: "all",
   hashOneBasedIndex: true,
   hash: true,
   transition: "none",
