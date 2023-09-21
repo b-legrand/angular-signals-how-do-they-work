@@ -512,8 +512,8 @@ An application would have to fully track its model in signals to completely remo
 
 - gestion d'états sont au tacket :
   - [NgRx SignalStore](https://github.com/ngrx/platform/discussions/3796]) 
-- [rx-angular](https://github.com/rx-angular/rx-angular/pull/1523)
-- [NGXS](https://github.com/ngxs/store/discussions/1977)
+  - [rx-angular](https://github.com/rx-angular/rx-angular/pull/1523)
+  - [NGXS](https://github.com/ngxs/store/discussions/1977)
 
 
 
