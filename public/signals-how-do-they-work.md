@@ -5,34 +5,125 @@
 
 
 
-## La réactivité
+## Introduction
+
+- Benjamin Legrand
+- onepoint
+- 15 ans dans le dev
+- angular enjoyer
+
+
+### La réactivité
 
 - fait de réagir
 
 
+### à l'ancienne, impératif
 
-## Bref historique
+- je recois une donnée, je mets à jour manuellement tout les endroits qui en dépendent
+- tousse tousse jQuery
+
+
+### Bref historique
 
 - signals in computer science
 
 
-### Plan
 
-- le passé. la réactivité ( 5 minutes max )
-   - push vs pull
-   - comment on faisait avant : Zone.js / React
-   - rxjs.Subject
+## Le passé
 
-- le présent. un signal c'est quoi ? ( 7 minutes max )
-  - c'est un getter. générique. fin du talk
-  - writable signals
-  - computed
-  - effect
 
-- le futur. ( 3 minutes max )
-  - où et quand utiliser signals vs rxjs ?
-  - avantages, inconvénients 
-  - qu'est ce que ca veut dire pour le futur d'angular
+### push vs pull
+
+- Promise<Value>
+
+
+### rxjs
+
+- Observable<Value>
+
+
+### yes, but
+
+- api, confettis d'opérateurs
+
+
+### Zone.js
+
+- patch votre code
+- microtasks
+
+
+### Push vs pull table
+
+
+
+## Signals ( le présent )
+
+
+### Who's got signals already ?
+
+- Solid
+- Preact
+- Astro
+- Qwik
+- 
+
+
+### RFC
+
+
+### a Signal, api
+
+```typescript
+type Signal<T> = {
+  () => T
+}
+```
+
+### signal(), usage
+
+```typescript
+const counter = signal(0);
+```
+
+### WritableSignal
+
+```typescript
+type WritableSignal<T> = {
+  () => T;
+  set(t: T): void
+}
+```
+
+### WritableSignal, usage
+
+
+### computed()
+
+
+### effect()
+
+
+### avantages
+
+
+
+## Le futur.
+
+
+### où et quand utiliser signals vs rxjs ?
+
+
+### avantages, inconvénients 
+
+
+### qu'est ce que ca veut dire pour le futur d'angular
+
+
+### roadmap et librairies à cotê
+
+
 
 ### Sources
 
@@ -40,4 +131,10 @@
 - [AMA sur reddit sur le sujet](https://www.reddit.com/r/Angular2/comments/12t7107/informal_ama_angular_signals_rfc/)
 - [Article sur AngularExperts à propos du push/pull](https://angularexperts.io/blog/angular-signals-push-pull)
 - [The evolution of signals in javascript](https://dev.to/this-is-learning/the-evolution-of-signals-in-javascript-8ob)
-- https://www.youtube.com/watch?v=2fW6JaJHoCE 
+- [useSignal is the future of web frameworks](https://www.builder.io/blog/usesignal-is-the-future-of-web-frameworks)
+- [Signals in typescript, the Road to Solid v1.7](https://www.youtube.com/watch?v=2fW6JaJHoCE)
+- [Signals, what is going on behind the scene](https://itnext.io/signals-whats-going-on-behind-the-scenes-ec858589ea63)
+
+
+### Merci
+
