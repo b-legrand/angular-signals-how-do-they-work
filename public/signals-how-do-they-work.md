@@ -1,23 +1,32 @@
 # Angular signals: how do they work ??? 
 
 <img src="angular.svg" height="90vh" alt="logo angular"/>
+~
+Dans ce talk je vais vous parler des signals, une nouvelle api d'angular
 
 
 <img src="icp-magnets.webp" alt="Insane Clown Possee">
+~
+Si vous connaissez ce même, vous êtes sur internet depuis trop longtemps.
 
 
 
 ## Introduction
 
 - Benjamin Legrand
-- onepoint
-- 15 ans dans le dev
-- angular enjoyer
+- 🏢 onepoint
+- 🧙‍♂️ 15 ans d'XP
+- 🅰️️ Angular enjoyer
+- 🎸 musique / ⌨️ claviers
+~
+Dans ce talk je vais vous parler des signals, une nouvelle api d'angular
+Et comment 
 
 
 ### La réactivité
 
 - fait de réagir
+- ⚛️ pas React
 
 
 ### à l'ancienne, impératif
@@ -77,22 +86,44 @@ mention de knockout.js
 - Qwik
 - Marko
 - Knockout
-- Angular
+- Ember
+- Pikachu
+
+
+### Who's got signals already ?
+
+- Solid
+- Preact
+- Astro
+- Qwik
+- Marko
+- Knockout
+- Ember
+- 🎉 Angular 🎉
+
+
 
 
 ### RFC
 - Avril 2023
 - https://github.com/angular/angular/discussions/49685
-- découpée en 4
+- découpée en 4 :
+  - Sub-RFC 1 : [Signals for Angular Reactivity](https://github.com/angular/angular/discussions/49684)
+  - Sub-RFC 2 : [Signals API](https://github.com/angular/angular/discussions/49683)
+  - Sub-RFC 3 : [Signalhbase components](https://github.com/angular/angular/discussions/49682)
 
 
 ### a Signal, api
 
 ```typescript
-type Signal<T> = {
-  () => T
+interface Signal<T> {
+  (): T;
+  [SIGNAL]: unknown;
 }
 ```
+~
+- Un signal encapsule une valeur
+- 
 
 
 ### signal(), usage
@@ -129,6 +160,12 @@ type WritableSignal<T> = {
 - https://github.com/angular/angular/discussions/49682
 
 
+### inputs
+
+
+### outputs
+
+
 
 ## Le futur.
 
@@ -141,6 +178,12 @@ type WritableSignal<T> = {
 ### où et quand utiliser signals vs rxjs ?
 
 - why not both ?
+- component <-> template
+~
+Pour l'instant tant que tout l'ècosystême n'a pas suivi, c'est le seul intérêt
+Permets une réactivité plus fine
+evite d'utiliser des subjects, des Observable et des choses asynchrone pour ce qui devrait être synchrone
+
 
 ### interopérabilité 
 
@@ -153,14 +196,44 @@ type WritableSignal<T> = {
 
 ### qu'est ce que ca veut dire pour le futur d'angular
 
+- plus simple
+- plusieurs manières de faire la même chose
+~
+Ce n'est pas la mort d'rxjs
+
+
+### Zoneless
+- applications sans Zone.js
+- ne veut pas dire que Zone.js est abandonné
+~
+An application would have to fully track its model in signals to completely remove dependency on zone.js.
+
 
 ### roadmap et librairies à cotê
 
+
 #### NgRx SignalStore
 
-```
 https://github.com/ngrx/platform/discussions/3796
 ```
+```
+- https://github.com/ngrx/platform/discussions/3796
+
+
+#### rx-angular
+
+https://github.com/rx-angular/rx-angular/pull/1523
+
+
+#### NGXS
+
+https://github.com/ngxs/store/discussions/1977
+
+
+
+## Conclusion
+
+<img src="quoi-on-dit-des-signaux.jpg">
 
 
 ### Sources

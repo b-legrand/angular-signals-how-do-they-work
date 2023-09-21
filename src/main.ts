@@ -19,5 +19,6 @@ deck.initialize({
   showSlideNumber: "speaker",
   hashOneBasedIndex: true,
   hash: true,
+  transition: "none",
   history: true,
 });
