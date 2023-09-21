@@ -30,7 +30,7 @@ Qu'est ce que ca veut dire pour le futur du framework
 
 ### La réactivité
 
-- le fait de réagir
+- 🤷‍ le fait de réagir
 - ⚛️ pas React<!-- .element: class="fragment" -->
 - 😈 <!-- .element: class="fragment" -->
 ~
@@ -47,6 +47,7 @@ Qu'est ce que ca veut dire pour le futur du framework
 existe depuis aussi longtemps que l'informatique
 par example excel, vous mettez une formule de calcul dans une cellule
 mention de knockout.js
+pas de réactivité dans le langage javascript
 les bonnes idées sont contagieuses
 
 
@@ -209,6 +210,9 @@ gestion de l'unsubscribe() pas simple, source de fuites mémoires.
 - basée sur l'arbre de composants
 - top - down<!-- .element: class="fragment" -->
 - pas "granulaire"<!-- .element: class="fragment" -->
+~
+- ici on compare cycle de vie aussi versus réactivité
+- c'est pas "granulaire" = on re-rends tout un composant au lieu de juste ce qui a changé
 
 
 ### producer and consumer
@@ -254,7 +258,7 @@ nouvelle primitive de base dans anular Signals API
 - Preact
 - Astro
 - Qwik
-- Marko
+- Svelte
 - Knockout
 - Ember
 - Pikachu
@@ -269,7 +273,7 @@ nouvelle primitive de base dans anular Signals API
 - Preact
 - Astro
 - Qwik
-- Marko
+- Svelte
 - Knockout
 - Ember
 - 🎉 Angular 🎉
