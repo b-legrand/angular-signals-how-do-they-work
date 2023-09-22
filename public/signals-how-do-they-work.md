@@ -30,6 +30,7 @@ Et comment ca va nous changer la vie en tant que devs angular
 - ⚛️ pas React<!-- .element: class="fragment" -->
 - comment ? quoi?<!-- .element: class="fragment" -->
 ~
+on réagit à un changement de données
 
 
 ### Bref historique
@@ -45,6 +46,7 @@ les bonnes idées sont contagieuses
 
 
 ## Le passé
+~
 - comment on faisait avant ?
 
 
@@ -59,152 +61,172 @@ les bonnes idées sont contagieuses
 ### double data binding
 
 - je mets ma donnée dans un objet js
-- je fait en sorte que le dom se mettre a jour sans que j'ai rien a faire
+- je fait en sorte que le dom se mettre a jour automagiquement<!-- .element: class="fragment" -->
 ~
 - MVC
 - redux state management
 
 
-### push vs pull
+### The only constant is change
 
 - Promise&lt;Value&gt;
 - asynchrone contaminant<!-- .element: class="fragment" -->
 - async / await<!-- .element: class="fragment" -->
+~
 
 
 ### rxjs
 
 - Observable&lt;Value&gt;
-- yes, but...
+- yes, but...<!-- .element: class="fragment" -->
 ~
 angular fondamentalement basé sur les observables
 
 
 #### creation operators
 
-    ajax
-    bindCallback
-    bindNodeCallback
-    defer
-    empty
-    from
-    fromEvent
-    fromEventPattern
-    generate
-    interval
-    of
-    range
-    throwError
-    timer
-    iif
+```markdown
+- ajax
+- bindCallback
+- bindNodeCallback
+- defer
+- empty
+- from
+- fromEvent
+- fromEventPattern
+- generate
+- interval
+- of
+- range
+- throwError
+- timer
+- iif
+```
 
 
 #### Join Creation Operators
-
-    combineLatest
-    concat
-    forkJoin
-    merge
-    partition
-    race
-    zip
+```markdown
+- combineLatest
+- concat
+- forkJoin
+- merge
+- partition
+- race
+- zip
+```
 
 
 #### Transformation operators
 
-    buffer
-    bufferCount
-    bufferTime
-    bufferToggle
-    bufferWhen
-    concatMap
-    concatMapTo
-    exhaust
-    exhaustMap
-    expand
-    groupBy
-    map
-    mapTo
-    mergeMap
-    mergeMapTo
-    mergeScan
-    pairwise
-    partition
-    pluck
-    scan
-    switchScan
-    switchMap
-    switchMapTo
-    window
-    windowCount
-    windowTime
-    windowToggle
-    windowWhen
+```markdown
+- buffer
+- bufferCount
+- bufferTime
+- bufferToggle
+- bufferWhen
+- concatMap
+- concatMapTo
+- exhaust
+- exhaustMap
+- expand
+- groupBy
+- map
+- mapTo
+- mergeMap
+- mergeMapTo
+- mergeScan
+- pairwise
+- partition
+- pluck
+- scan
+- switchScan
+- switchMap
+- switchMapTo
+- window
+- windowCount
+- windowTime
+- windowToggle
+- windowWhen
+```
 
 
 #### Filtering Operators
 
-    audit
-    auditTime
-    debounce
-    debounceTime
-    distinct
-    distinctUntilChanged
-    distinctUntilKeyChanged
-    elementAt
-    filter
-    first
-    ignoreElements
-    last
-    sample
-    sampleTime
-    single
-    skip
-    skipLast
-    skipUntil
-    skipWhile
-    take
-    takeLast
-    takeUntil
-    takeWhile
-    throttle
-    throttleTime
+```markdown
+- audit
+- auditTime
+- debounce
+- debounceTime
+- distinct
+- distinctUntilChanged
+- distinctUntilKeyChanged
+- elementAt
+- filter
+- first
+- ignoreElements
+- last
+- sample
+- sampleTime
+- single
+- skip
+- skipLast
+- skipUntil
+- skipWhile
+- take
+- takeLast
+- takeUntil
+- takeWhile
+- throttle
+- throttleTime
+```
 
 
-### yes, but
+### yes, but...
 
-- api, confettis d'opérateurs
-- marche d'entrée
+- API... <span class="fragment">foisonnante</span>
+- marche d'entrée HAUTE<!-- .element: class="fragment" -->
+~
 
 
 ### Zone.js
 
-- patch votre code
-- microtasks
-- détection de changement
+- monkey-patch votre code
+- microtasks<!-- .element: class="fragment" -->
+- détection de changement<!-- .element: class="fragment" -->
 
 
 ### détection de changement angular
 
 - basée sur l'arbre de composants
-- top - down 
-- pas "granulaire"
-
-
-### Push vs pull table
+- top - down<!-- .element: class="fragment" -->
+- pas "granulaire"<!-- .element: class="fragment" -->
 
 
 ### producer and consumer
+
+Producer <---> Consumer
 
 ~
 - on va avoir le concept dans les observables comme les promesses
 - de qui consomme la donnée et qui la produit
 
 
+### Push vs pull table
+
+|      | Single   | Multiple   |
+| ---- | -------- | ---------- |
+| Pull | Function | Iterator   |
+| Push | Promise  | Observable |
+~
+- impératif : pull on demande la donnée
+- abonnement, la données nous est fournie via un callback
+- Ou sont les signals là dedans (au milieu)
+
+
 
 ## Le présent
-
-- Signals API
+~
+nouvelle primitive de base dans anular Signals API
 
 
 ### Who's got signals already ?
@@ -234,7 +256,7 @@ angular fondamentalement basé sur les observables
 - 🎉 Angular 🎉
 ~
 - on va adopter un concept qui existe déjà ailleurs
-- comment on réconcilie tout ca
+- comment on réconcilie tout ca ?
 
 
 ### RFC: Request For Comments
@@ -244,12 +266,16 @@ angular fondamentalement basé sur les observables
 - découpée en 4 :
   - Sub-RFC 1 : [Signals for Angular Reactivity](https://github.com/angular/angular/discussions/49684)
   - Sub-RFC 2 : [Signals API](https://github.com/angular/angular/discussions/49683)
-  - Sub-RFC 3 : [Signalhbase components](https://github.com/angular/angular/discussions/49682)
+  - Sub-RFC 3 : [Signal-based components](https://github.com/angular/angular/discussions/49682)
+  - Sub-RFC 4 : [Observable and signal interactivity](https://github.com/angular/angular/discussions/49681)
+~
+Request For Comments = discussion / demande de l'avis des devs
+Néanmoins pas mal de directions pour le futur d'angular avec les signals sont là
 
 
 ### a Signal, api
 
-```typescript
+```typescript [|2]
 interface Signal<T> {
   (): T;
   [SIGNAL]: unknown;
@@ -263,8 +289,8 @@ interface Signal<T> {
 
 ### signal(), usage
 
-```typescript
-const counter = signal(0);
+```typescript [|1|3]
+const counter: Signal<number> = signal(0);
 
 console.log(counter()); // 0
 ```
@@ -280,7 +306,7 @@ console.log(counter()); // 0
 
 ### WritableSignal
 
-```typescript
+```typescript [|2|3|4]
 interface WritableSignal<T> extends Signal<T> = {
   (): T;
   set(value: T): void;
@@ -288,7 +314,8 @@ interface WritableSignal<T> extends Signal<T> = {
   asReadonly(): Signal<T>;
 }
 ```
-- set va changer les valueurs, changer complètement, replace l'ancienne
+~
+- set va changer les valeurs, changer complètement, replace l'ancienne
 - update va vous permettre de passer une méthode de mise à jour a partir de l'ancienne valeur ( redux reducer, immutable )
 - ils avaient aussi mutate dans l'api mais en cours de suppression
 - asReadOnly donne une version lecture seule du signal
@@ -296,7 +323,7 @@ interface WritableSignal<T> extends Signal<T> = {
 
 ### WritableSignal, usage
 
-```typescript
+```typescript [|2|5|8]
 // create a writable signal
 const counter = signal(0);
 
@@ -308,12 +335,12 @@ counter.update(currentValue => currentValue + 1);
 ```
 ~
 - à noter: tout est synchrone
-- pas de 
+- 
 
 
 ### computed()
 
-```typescript
+```typescript [|1|4|7]
 const counter = signal(0);
 
 // creating a computed signal
@@ -329,7 +356,7 @@ const color = computed(() => isEven() ? 'red' : 'blue');
 
 
 ### effect()
-```typescript
+```typescript [|1-2|5]
 const firstName = signal('John');
 const lastName  = signal('Doe');
 
@@ -342,12 +369,41 @@ Cas d'utilisation:
 - triggering network requests
 - performing rendering actions
 
+```typescript
+```
 
 
-### avantages, primitives de base
+### creusons un peu
+
+```typescript [|2|6-9|10]
+export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): WritableSignal<T> {
+  const node: SignalNode<T> = Object.create(SIGNAL_NODE);
+  node.value = initialValue;
+  options?.equal && (node.equal = options.equal);
+
+  function signalFn() {
+    producerAccessed(node);
+    return node.value;
+  }
+  return signalFn as WritableSignal<T>;
+}
+```
+~
+- https://github.com/angular/angular/blob/main/packages/core/src/signals/src/signal.ts
+- à noter : le signalFn() dans une fonction interne, permets aux fonctions de garder une référence du this
+
+
+### avantages
 
 - it is just a function
-- 
+- and sometimes the best solution is a function<!-- .element: class="fragment" -->
+- not a class, not a decorator. a function<!-- .element: class="fragment" -->
+~
+- Simplicité
+
+
+
+## LE FUTUR
 
 
 ### intégration avec angular: Signal-based components
@@ -366,7 +422,7 @@ Cas d'utilisation:
 
 
 ### signal-based component
-```typescript
+```typescript [|2|10|13|5-6]
 @Component({
   signals: true,
   selector: 'temperature-calc',
@@ -386,21 +442,42 @@ export class SimpleCounter {
 
 ### oui mais on m'a dit de ne jamais appeler de fonctions dans les templates
 
-- yes, but
+- yes, but...
 ~
 - sinon ca se ré-exécute à chaque détection de changement
 - ca ne s'applique plus dans un composant marqué signal
 - les expressions ne se réevalue que quand le signal a changé 
- 
+
 
 ### inputs
 
-```typescript
+```typescript [|5-6|11,14|17-19]
+@Component({
+  signals: true,
+  selector: 'user-profile',
+  template: `
+    <p>Name: {{ firstName() }} {{ lastName() }}</p>
+    <p>Account suspended: {{ suspended() }}</p>
+  `,
+})
+export class UserProfile {
+  // Create an optional input without an initial value.
+  firstName = input<string>(); // Signal<string|undefined>
+
+  // Create an input with a default value
+  lastName = input('Smith'); // Signal<string>
+
+  // Create an input with options.
+  suspended = input<boolean>(false, {
+    alias: 'disabled',
+  }); // Signal<boolean>
+}
 ```
+
 
 ### outputs
 
-```typescript
+```typescript [|5-6|10-11|12-17]
 @Component({
   signals: true,
   selector: 'simple-counter',
@@ -412,16 +489,15 @@ export class SimpleCounter {
 export class SimpleCounter {
   saved = output<number>(); // EventEmitter<number>
   cleared = output<number>({alias: 'reset'});
-  
   save() {
     this.saved.emit(123);
   }
-  
   reset() {
     this.cleared.emit(456);
   }
 }
 ```
+
 
 ### so long
 
@@ -430,9 +506,7 @@ export class SimpleCounter {
 - 🫡<!-- .element: class="fragment" -->
 
 
-### goodbye decorators
-
-```typescript
+```typescript [|5|7|12-13|16]
 @Component({
   signals: true,
   selector: 'form-field',
@@ -454,7 +528,7 @@ export class FormField {
 ```
 
 
-### so long
+### goodbye decorators
 
 - @ViewChild()
 - @ContentChild()
@@ -463,21 +537,51 @@ export class FormField {
 - 🫡<!-- .element: class="fragment" -->
 
 
+### Application Lifecycle
 
-## Le futur.
+- `afterRender()`
+- `afterNextRender()`
+~
+nouvelles fonctions en v16 pour se rattacher au rendu du composant
+
+
+### signals: true
+
+- ngOnInit
+- ngOnDestroy
+
+
+### not anymore
+- ~~ngOnChanges~~
+- ~~ngDoCheck~~
+- ~~ngAfterViewInit~~
+- ~~ngAfterContentInit~~
+- ~~ngAfterViewChecked~~
+- ~~ngAfterContentChecked~~
+- 🫡<!-- .element: class="fragment" -->
+
+
+
+## Le futur 2, la vengeance
+(là ou on va on a pas besoin, de routes)
 
 
 ### Statut actuel
 
-- developer preview en v16 
-- signal, computed et effect() sont présents
-- tout le reste n'existe pas 
+- `signal()`, `computed()` et `effect()`
+- developer preview en v16<!-- .element: class="fragment" -->
+- tout le reste n'existe pas (encore)<!-- .element: class="fragment" -->
+- v17 d'ici le devfest ? <!-- .element: class="fragment" -->
+~
+- vous pouvez déjà jouer avec
+- rendu / signal-based pas encore là
 
 
 ### où et quand utiliser signals vs rxjs ?
 
-- why not both ?
-- component <-> template
+- why not both ?<!-- .element: class="fragment" -->
+- component <-> template<!-- .element: class="fragment" -->
+- état simple<!-- .element: class="fragment" -->
 ~
 Pour l'instant tant que tout l'ècosystême n'a pas suivi, c'est le seul intérêt
 Permets une réactivité plus fine
@@ -486,22 +590,29 @@ evite d'utiliser des subjects, des Observable et des choses asynchrone pour ce q
 
 ### interopérabilité 
 
-- toSignal
-- toObservable
+- toSignal(o: Observable): Signal<!-- .element: class="fragment" -->
+- toObservable(s: Signal): Observable<!-- .element: class="fragment" -->
+~
 
 
-### avantages, inconvénients 
+### inconvénients / craintes
+
+- plusieurs manières de faire la même chose<!-- .element: class="fragment" -->
+- schisme de l'écosystème<!-- .element: class="fragment" -->
+~
+- //TODO résumer la RFC Summary
 
 
-### qu'est ce que ca veut dire pour le futur d'angular
+### avantages / le futur d'angular
 
-- plus simple
-- plusieurs manières de faire la même chose
+- plus simple<!-- .element: class="fragment" -->
+- support LTS<!-- .element: class="fragment" -->
+- ne remplace pas rxjs<!-- .element: class="fragment" -->
 ~
 Ce n'est pas la mort d'rxjs
 
 
-### Zoneless
+### Zoneless applications
 - applications sans Zone.js
 - ne veut pas dire que Zone.js est abandonné
 ~
@@ -510,7 +621,7 @@ An application would have to fully track its model in signals to completely remo
 
 ### roadmap et librairies à cotê
 
-- gestion d'états sont au tacket :
+- RFC coté librairies de gestion d'état :
   - [NgRx SignalStore](https://github.com/ngrx/platform/discussions/3796]) 
   - [rx-angular](https://github.com/rx-angular/rx-angular/pull/1523)
   - [NGXS](https://github.com/ngxs/store/discussions/1977)
@@ -520,6 +631,9 @@ An application would have to fully track its model in signals to completely remo
 ## Conclusion
 
 <img src="quoi-on-dit-des-signaux.jpg">
+~
+J'en ai terminé, boule de cristal avenir angular
+Merci de m'avoir écouté.
 
 
 ### Sources
@@ -535,3 +649,4 @@ An application would have to fully track its model in signals to completely remo
 
 ### Merci
 
+// TODO QRCODE SLIDES
