@@ -7,10 +7,9 @@ import Reveal from "reveal.js";
 import Markdown from "reveal.js/plugin/markdown/markdown";
 import Notes from "reveal.js/plugin/notes/notes";
 import Highlight from "reveal.js/plugin/highlight/highlight";
-import Gamepad from "./plugins/gamepad-plugin";
 
 let deck = new Reveal({
-  plugins: [Markdown, Notes, Highlight, Gamepad],
+  plugins: [Markdown, Notes, Highlight],
 });
 
 deck.initialize({
