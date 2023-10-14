@@ -85,7 +85,6 @@ angular fondamentalement basé sur les observables
 
 #### creation operators
 
-```markdown
 - ajax
 - bindCallback
 - bindNodeCallback
@@ -101,11 +100,6 @@ angular fondamentalement basé sur les observables
 - throwError
 - timer
 - iif
-```
-
-
-#### Join Creation Operators
-```markdown
 - combineLatest
 - concat
 - forkJoin
@@ -113,12 +107,12 @@ angular fondamentalement basé sur les observables
 - partition
 - race
 - zip
-```
+
+<!-- .element: class="stamps" -->
 
 
 #### Transformation operators
 
-```markdown
 - buffer
 - bufferCount
 - bufferTime
@@ -147,12 +141,12 @@ angular fondamentalement basé sur les observables
 - windowTime
 - windowToggle
 - windowWhen
-```
+
+<!-- .element: class="stamps" -->
 
 
 #### Filtering Operators
 
-```markdown
 - audit
 - auditTime
 - debounce
@@ -178,7 +172,8 @@ angular fondamentalement basé sur les observables
 - takeWhile
 - throttle
 - throttleTime
-```
+
+<!-- .element: class="stamps" -->
 
 
 ### yes, but...

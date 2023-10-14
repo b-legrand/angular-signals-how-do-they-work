@@ -8,17 +8,25 @@ import Markdown from "reveal.js/plugin/markdown/markdown";
 import Notes from "reveal.js/plugin/notes/notes";
 import Highlight from "reveal.js/plugin/highlight/highlight";
 
+import { slideChanged, resizeStampsContainer, initializeStampsContainer } from "./stamps";
+
 let deck = new Reveal({
   plugins: [Markdown, Notes, Highlight],
 });
 
-deck.initialize({
-  progress: false,
-  controls: false,
-  slideNumber: "c/t",
-  showSlideNumber: "speaker",
-  hashOneBasedIndex: true,
-  hash: true,
-  transition: "none",
-  history: true,
-});
+deck
+  .initialize({
+    progress: false,
+    controls: false,
+    slideNumber: "c/t",
+    showSlideNumber: "speaker",
+    hashOneBasedIndex: true,
+    hash: true,
+    transition: "none",
+    history: true,
+  })
+  .then(() => {
+    initializeStampsContainer();
+  });
+deck.on("slidechanged", slideChanged);
+deck.on("resize", resizeStampsContainer);
