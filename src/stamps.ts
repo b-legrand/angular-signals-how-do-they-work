@@ -4,6 +4,7 @@ interface Stamp {
   label: string;
   rotation: number;
   position: { x: number; y: number };
+  from: { x: number; y: number };
   color: string;
 }
 
@@ -52,11 +53,14 @@ export function clearStampsContainer() {
 function createStamp(label: string): Stamp {
   const x = stampMarginX + Math.random() * (width - 2 * stampMarginX);
   const y = stampMarginY + Math.random() * (height - 2 * stampMarginY);
+  const fromOffsetX = [-1, 1][Math.floor(Math.random() * 2)] * 50;
+  const fromOffsetY = [-1, 1][Math.floor(Math.random() * 2)] * 50;
   return {
     label,
     position: { x, y },
     rotation: Math.random() * 20 - 10, // angles from -10 to 10
     color: mochaColors[Math.floor(Math.random() * mochaColors.length)],
+    from: { x: fromOffsetX, y: fromOffsetY },
   };
 }
 
@@ -78,7 +82,7 @@ export function slideChanged(args) {
       `background-color: #${stamp.color}`,
     ];
     const initialStyles = [
-      `transform: rotate(${stamp.rotation}deg) scale(50)`,
+      `transform: rotate(${stamp.rotation}deg) scale(50) translateX(${stamp.from.x}px) translateY(${stamp.from.y}px)`,
       `opacity: 0`,
     ];
     stampEl.setAttribute("style", [...styles, ...initialStyles].join(";"));
@@ -88,10 +92,10 @@ export function slideChanged(args) {
         "style",
         [
           ...styles,
-          `transform: rotate(${stamp.rotation}deg) scale(2)`,
+          `transform: rotate(${stamp.rotation}deg) scale(2) translateX(0) translateY(0)`,
           `opacity: 1`,
         ].join(";")
       );
-    }, index * 100);
+    }, index * 200);
   });
 }
