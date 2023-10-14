@@ -6,6 +6,9 @@ Dans ce talk je vais vous parler des signals, une nouvelle api d'angular
 
 
 <img src="icp-magnets.webp" alt="Insane Clown Possee">
+<p class="half-size">
+"Fucking magnets, how do they work?"<br/>
+<i>Insane Clown Possee - Miracles</i></p>
 ~
 Si vous connaissez ce même, vous êtes sur internet depuis trop longtemps.
 
@@ -14,23 +17,25 @@ Si vous connaissez ce même, vous êtes sur internet depuis trop longtemps.
 ## Introduction
 
 - Benjamin Legrand
+- 🐦 @benjilegnard<!-- .element: class="fragment" -->
 - 🏢 onepoint<!-- .element: class="fragment" -->
 - 🧙‍♂️ 15 ans d'XP<!-- .element: class="fragment" -->
 - 🅰️️ Angular enjoyer<!-- .element: class="fragment" -->
 - 🎸 musique / ⌨️ claviers<!-- .element: class="fragment" -->
-- @benjilegnard<!-- .element: class="fragment" -->
 ~
 Dans ce talk je vais vous parler des signals, une nouvelle api d'angular
 Et comment ca va nous changer la vie en tant que devs angular
+Qu'est ce que ca veut dire pour le futur du framework
 
 
 ### La réactivité
 
-- fait de réagir
+- le fait de réagir
 - ⚛️ pas React<!-- .element: class="fragment" -->
-- comment ? quoi?<!-- .element: class="fragment" -->
+- 😈 <!-- .element: class="fragment" -->
 ~
-on réagit à un changement de données
+- on réagit à un changement de données, a un évènement.
+- centré sur les données et leur changement.
 
 
 ### Bref historique
@@ -40,6 +45,7 @@ on réagit à un changement de données
 - solid.js<!-- .element: class="fragment" -->
 ~
 existe depuis aussi longtemps que l'informatique
+par example excel, vous mettez une formule de calcul dans une cellule
 mention de knockout.js
 les bonnes idées sont contagieuses
 
@@ -56,31 +62,38 @@ les bonnes idées sont contagieuses
 - je mets à jour manuellement tout les endroits qui l'affiche<!-- .element: class="fragment" -->
 - tousse tousse jQuery<!-- .element: class="fragment" -->
 - single source of truth<!-- .element: class="fragment" -->
+~
+jQuery ou Vanilla, pareil, pas de réactivité dans le language de base
 
 
 ### double data binding
 
-- je mets ma donnée dans un objet js
-- je fait en sorte que le dom se mettre a jour automagiquement<!-- .element: class="fragment" -->
+- je mets ma donnée dans un objet js 
+- je fait en sorte que le DOM se mettre a jour automagiquement<!-- .element: class="fragment" -->
 ~
+- déjà dans Flex
 - MVC
 - redux state management
 
 
 ### The only constant is change
 
-- Promise&lt;Value&gt;
+- Promise&lt;Value&gt; 🤝
 - asynchrone contaminant<!-- .element: class="fragment" -->
 - async / await<!-- .element: class="fragment" -->
 ~
+Quand on parle de réactivité, on peut gérer de l'asynchrone
+Soit la valeur existe soit elle n'existe pas encore.
 
 
 ### rxjs
 
-- Observable&lt;Value&gt;
+- Observable&lt;Value&gt; 🔍
 - yes, but...<!-- .element: class="fragment" -->
 ~
 angular fondamentalement basé sur les observables
+un observable encapsule une valeur qui change au fil du temps
+et peut changer plusieurs fois.
 
 
 #### creation operators
@@ -181,11 +194,12 @@ angular fondamentalement basé sur les observables
 - API... <span class="fragment">foisonnante</span>
 - marche d'entrée HAUTE<!-- .element: class="fragment" -->
 ~
+gestion de l'unsubscribe() pas simple, source de fuites mémoires.
 
 
 ### Zone.js
 
-- monkey-patch votre code
+- monkey-patch votre code 🙈
 - microtasks<!-- .element: class="fragment" -->
 - détection de changement<!-- .element: class="fragment" -->
 
@@ -199,11 +213,12 @@ angular fondamentalement basé sur les observables
 
 ### producer and consumer
 
-Producer <---> Consumer
-
+Producer <---> Consumer<br/>
+   📣  <--->  👂
 ~
 - on va avoir le concept dans les observables comme les promesses
 - de qui consomme la donnée et qui la produit
+- dans quel sens ?
 
 
 ### Push vs pull table
@@ -216,6 +231,15 @@ Producer <---> Consumer
 - impératif : pull on demande la donnée
 - abonnement, la données nous est fournie via un callback
 - Ou sont les signals là dedans (au milieu)
+
+
+### Push vs pull table
+
+|      | Single   | Multiple   |
+| ---- | -------- | ---------- |
+| Pull | Function | Iterator   |
+|      |          | ➡️ Signal ⬅️ |
+| Push | Promise  | Observable |
 
 
 
@@ -257,12 +281,12 @@ nouvelle primitive de base dans anular Signals API
 ### RFC: Request For Comments
 
 - Avril 2023
-- https://github.com/angular/angular/discussions/49685
+- [RFC: Angular Signals🚦](https://github.com/angular/angular/discussions/49685)
 - découpée en 4 :
-  - Sub-RFC 1 : [Signals for Angular Reactivity](https://github.com/angular/angular/discussions/49684)
-  - Sub-RFC 2 : [Signals API](https://github.com/angular/angular/discussions/49683)
-  - Sub-RFC 3 : [Signal-based components](https://github.com/angular/angular/discussions/49682)
-  - Sub-RFC 4 : [Observable and signal interactivity](https://github.com/angular/angular/discussions/49681)
+  - #1 : [Signals for Angular Reactivity](https://github.com/angular/angular/discussions/49684)
+  - #2 : [Signals API](https://github.com/angular/angular/discussions/49683)
+  - #3 : [Signal-based components](https://github.com/angular/angular/discussions/49682)
+  - #4 : [Observable and signal interactivity](https://github.com/angular/angular/discussions/49681)
 ~
 Request For Comments = discussion / demande de l'avis des devs
 Néanmoins pas mal de directions pour le futur d'angular avec les signals sont là
@@ -364,11 +388,8 @@ Cas d'utilisation:
 - triggering network requests
 - performing rendering actions
 
-```typescript
-```
 
-
-### creusons un peu
+### Creusons un peu 
 
 ```typescript [|2|6-9|10]
 export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): WritableSignal<T> {
@@ -388,29 +409,37 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 - à noter : le signalFn() dans une fonction interne, permets aux fonctions de garder une référence du this
 
 
+### Creusons encore
+
+// TODO schema graphe d'appel
+
+
 ### avantages
 
 - it is just a function
 - and sometimes the best solution is a function<!-- .element: class="fragment" -->
-- not a class, not a decorator. a function<!-- .element: class="fragment" -->
+- not a class, not a decorator. just a function<!-- .element: class="fragment" -->
 ~
 - Simplicité
+- courbe d'apprentissage réduite
 
 
 
 ## LE FUTUR
 
 
-### intégration avec angular: Signal-based components
+### intégration avec angular:<br/> Signal-based components
 
 ```typescript
 @Component({
   signals: true,
-  ...
+  // ...
 })
 ```
 
-- https://github.com/angular/angular/discussions/49682
+https://github.com/angular/angular/discussions/49682
+<!-- .element: class="half-size" -->
+
 ~
 - il va falloir marquer vos composants comme étant "signal base" ( standalone base ? )
 - 
@@ -564,11 +593,17 @@ nouvelles fonctions en v16 pour se rattacher au rendu du composant
 ### Statut actuel
 
 - `signal()`, `computed()` et `effect()`
-- developer preview en v16<!-- .element: class="fragment" -->
-- tout le reste n'existe pas (encore)<!-- .element: class="fragment" -->
-- v17 d'ici le devfest ? <!-- .element: class="fragment" -->
+- __developer preview__ en v16
+
+<!-- .element: class="fragment" -->
+
+- tout le reste n'existe pas (encore)
+- signal-based components en __developer preview__ en v17 ?
+
+<!-- .element: class="fragment" -->
 ~
 - vous pouvez déjà jouer avec
+- developer preview: ON NE VA PAS EN PROD AVEC
 - rendu / signal-based pas encore là
 
 

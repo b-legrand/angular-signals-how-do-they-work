@@ -28,3 +28,11 @@
 - [AMA sur reddit sur le sujet](https://www.reddit.com/r/Angular2/comments/12t7107/informal_ama_angular_signals_rfc/)
 - [Article sur AngularExperts à propos du push/pull](https://angularexperts.io/blog/angular-signals-push-pull)
 - [The evolution of signals in javascript](https://dev.to/this-is-learning/the-evolution-of-signals-in-javascript-8ob)
+- [How React isn't reactive and why you should'nt care](https://dev.to/this-is-learning/how-react-isn-t-reactive-and-why-you-shouldn-t-care-152m)
+- https://www.builder.io/blog/unified-reactivity-theory
+
+## TODO post review
+
+- schéma du graph d'appel post 
+- détailler un peu plus la réactivité
+- illustrations back to the future / emoji

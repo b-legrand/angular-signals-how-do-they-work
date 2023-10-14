@@ -48,6 +48,10 @@ iframe {
 
 @import "@catppuccin/highlightjs/sass/catppuccin-mocha.scss";
 
+.half-size {
+  font-size: 50%;
+}
+
 .qr-codes {
   display: flex;
   flex-direction: row;
