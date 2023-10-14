@@ -644,4 +644,17 @@ Merci de m'avoir écouté.
 
 ### Merci
 
-// TODO QRCODE SLIDES
+<div class="qr-codes">
+  <div class="slides-link">
+    <a href="https://b-legrand.github.io/angular-signals-how-do-they-work/">
+      <img src="signals-slides.png" alt="QRCode du lien vers les slides">
+    </a>
+    <h4>⬆️ Slides ⬆️</h4>
+  </div>
+  <div class="openfeedback-link">
+    <h4>⬇️ Feedback ⬇️</h4>
+    <a href="https://openfeedback.io/p32EOIbP5bj4WDdz8bJs/2023-10-20/angularsignalshowdotheywork">
+      <img src="signals-openfeedback.png" alt="QRCode du lien vers openfeedback">
+    </a>
+  </div>
+</div>

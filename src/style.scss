@@ -46,4 +46,17 @@ iframe {
   border: none;
 }
 
-@import '@catppuccin/highlightjs/sass/catppuccin-mocha.scss';
+@import "@catppuccin/highlightjs/sass/catppuccin-mocha.scss";
+
+.qr-codes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.qr-codes > div {
+  display: flex;
+  flex-direction: column;
+}
+.qr-codes > div > * {
+  display: block;
+}
