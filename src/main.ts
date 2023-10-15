@@ -9,9 +9,10 @@ import Notes from "reveal.js/plugin/notes/notes";
 import Highlight from "reveal.js/plugin/highlight/highlight";
 
 import { slideChanged, resizeStampsContainer, initializeStampsContainer } from "./stamps";
+import Gamepad from "./gamepad";
 
 let deck = new Reveal({
-  plugins: [Markdown, Notes, Highlight],
+  plugins: [Markdown, Notes, Highlight, Gamepad],
 });
 
 deck
