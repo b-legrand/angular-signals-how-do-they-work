@@ -53,6 +53,7 @@ les bonnes idées sont contagieuses
 
 
 ## Le passé
+<img src="back-to-the-future-3.jpg" alt="Image du film retour vers le futur 3, doc et marty en costume de cowboy">
 ~
 - comment on faisait avant ?
 
@@ -248,6 +249,7 @@ Producer <---> Consumer<br/>
 
 
 ## Le présent
+<img src="back-to-the-future-1.jpg" alt="Image du film retour vers le futur, doc et marty démarrent la machine à remonter le temps">
 ~
 nouvelle primitive de base dans anular Signals API
 
@@ -431,6 +433,8 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 
 ## LE FUTUR
 
+<img src="back-to-the-future-2.jpg" alt="Image du film retour vers le futur, doc et marty sont dans leur futur">
+
 
 ### intégration avec angular:<br/> Signal-based components
 
@@ -590,8 +594,10 @@ nouvelles fonctions en v16 pour se rattacher au rendu du composant
 
 
 
-## Le futur 2, la vengeance
-(là ou on va on a pas besoin, de routes)
+## Le futur (2)
+
+<img src="back-to-the-future-your-kids.jpg" alt="Image du film retour vers le futur, marty en sueur après un solo de guitare">
+Your kids are gonna love it
 
 
 ### Statut actuel
