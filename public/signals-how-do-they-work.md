@@ -485,7 +485,7 @@ export class SimpleCounter {
 
 ### inputs
 
-```typescript [|5-6|11,14|17-19]
+```typescript [|5-6|11,14]
 @Component({
   signals: true,
   selector: 'user-profile',
@@ -501,10 +501,6 @@ export class UserProfile {
   // Create an input with a default value
   lastName = input('Smith'); // Signal<string>
 
-  // Create an input with options.
-  suspended = input<boolean>(false, {
-    alias: 'disabled',
-  }); // Signal<boolean>
 }
 ```
 
