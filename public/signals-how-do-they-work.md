@@ -422,6 +422,8 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 
 ### avantages
 
+<img src="kill-bill-beard.gif" alt="Image d'un sage / mentor asiatique, au cheveux blancs et à la barbe longue, faisant voler ses longs poils d'un revers de la main et avec un air de défiance"/>
+
 - it is just a function
 - and sometimes the best solution is a function<!-- .element: class="fragment" -->
 - not a class, not a decorator. just a function<!-- .element: class="fragment" -->
