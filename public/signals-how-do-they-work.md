@@ -417,7 +417,7 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 
 ### Creusons encore
 
-// TODO schema graphe d'appel
+<img src="signal-call-graph.svg" alt="Graphe en noeuds de differents appels de fonctions"/>
 
 
 ### avantages
