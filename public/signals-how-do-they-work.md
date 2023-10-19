@@ -31,25 +31,25 @@ Qu'est ce que ca veut dire pour le futur du framework
 ### La réactivité
 
 - 🤷‍ le fait de réagir
-- ⚛️ pas React<!-- .element: class="fragment" -->
-- 😈 <!-- .element: class="fragment" -->
+- "Reactive Programming is a declarative programming paradigm built on data-centric event emitters." (Ryan Carniato)<!-- .element: class="fragment" -->
+- // TODO excel screenshot<!-- .element: class="fragment" -->
 ~
 - on réagit à un changement de données, a un évènement.
 - centré sur les données et leur changement.
-
-
-### Bref historique
-
-- signals in computer science
-- knockout.js<!-- .element: class="fragment" -->
-- solid.js<!-- .element: class="fragment" -->
-~
 existe depuis aussi longtemps que l'informatique
 par example excel, vous mettez une formule de calcul dans une cellule
 mention de knockout.js
-pas de réactivité dans le langage javascript
-les bonnes idées sont contagieuses
 
+
+### Comment ?
+
+- Value-based
+- Observable-based<!-- .element: class="fragment" -->
+- Signal-based<!-- .element: class="fragment" -->
+~
+- Value-based; that is, dirty-checking: (Angular, React, Svelte)
+- Observable-based: (Angular with RxJS, Svelte)
+- Signal-based: (Angular with signals, Qwik, React with MobX, Solid, Vue)
 
 
 ## Le passé
@@ -61,14 +61,15 @@ les bonnes idées sont contagieuses
 ### à l'ancienne, impératif
 
 - je recois une donnée<!-- .element: class="fragment" -->
-- je mets à jour manuellement tout les endroits qui l'affiche<!-- .element: class="fragment" -->
-- tousse tousse jQuery<!-- .element: class="fragment" -->
+- mise à jour manuelle partout où on l'affiche<!-- .element: class="fragment" -->
+- Vanilla js / jQuery<!-- .element: class="fragment" -->
 - single source of truth<!-- .element: class="fragment" -->
 ~
 jQuery ou Vanilla, pareil, pas de réactivité dans le language de base
+dirty-checking
 
 
-### double data binding
+### double data binding / value based
 
 - je mets ma donnée dans un objet js 
 - je fait en sorte que le DOM se mettre a jour automagiquement<!-- .element: class="fragment" -->
@@ -195,6 +196,7 @@ et peut changer plusieurs fois.
 
 - API... <span class="fragment">foisonnante</span>
 - marche d'entrée HAUTE<!-- .element: class="fragment" -->
+- unsubscribe / fuites mémoires<!-- .element: class="fragment" -->
 ~
 gestion de l'unsubscribe() pas simple, source de fuites mémoires.
 
@@ -202,8 +204,10 @@ gestion de l'unsubscribe() pas simple, source de fuites mémoires.
 ### Zone.js
 
 - monkey-patch votre code 🙈
-- microtasks<!-- .element: class="fragment" -->
+- asynchrone / microtasks<!-- .element: class="fragment" -->
 - détection de changement<!-- .element: class="fragment" -->
+~
+problématiques de performance
 
 
 ### détection de changement angular
@@ -219,7 +223,7 @@ gestion de l'unsubscribe() pas simple, source de fuites mémoires.
 ### producer and consumer
 
 Producer <---> Consumer<br/>
-   📣  <--->  👂
+    📣  <--->  👂
 ~
 - on va avoir le concept dans les observables comme les promesses
 - de qui consomme la donnée et qui la produit
@@ -258,13 +262,14 @@ nouvelle primitive de base dans anular Signals API
 
 - Solid
 - Preact
-- Astro
+- MobX
 - Qwik
 - Svelte
 - Knockout
 - Ember
 - Pikachu
 ~
+- les bonnes idées sont contagieuses
 - concept existe déjà dans d'autre frameworks
 - y'en a un la dedans c'est un pokemon
 
@@ -273,7 +278,7 @@ nouvelle primitive de base dans anular Signals API
 
 - Solid
 - Preact
-- Astro
+- MobX
 - Qwik
 - Svelte
 - Knockout
@@ -397,7 +402,7 @@ Cas d'utilisation:
 
 ### Creusons un peu 
 
-```typescript [|2|6-9|10]
+```typescript [|2|6-9|10|7]
 export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): WritableSignal<T> {
   const node: SignalNode<T> = Object.create(SIGNAL_NODE);
   node.value = initialValue;
@@ -411,13 +416,18 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 }
 ```
 ~
-- https://github.com/angular/angular/blob/main/packages/core/src/signals/src/signal.ts
+- core/primitive : https://github.com/angular/angular/tree/main/packages/core/primitives/signals
 - à noter : le signalFn() dans une fonction interne, permets aux fonctions de garder une référence du this
 
 
 ### Creusons encore
 
 <img src="signal-call-graph.svg" alt="Graphe en noeuds de differents appels de fonctions"/>
+~
+- ReactiveNode: producer et consumer
+- notion de dirty
+- chaque fois qu'un signal est appelé, le producer est créé
+- je vais pas plus loin, mais allez lire le code source
 
 
 ### avantages
@@ -449,7 +459,6 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 
 https://github.com/angular/angular/discussions/49682
 <!-- .element: class="half-size" -->
-
 ~
 - il va falloir marquer vos composants comme étant "signal base" ( standalone base ? )
 - 
@@ -474,9 +483,15 @@ export class SimpleCounter {
 ```
 
 
-### oui mais on m'a dit de ne jamais appeler de fonctions dans les templates
-
-- yes, but...
+### oui mais....
+- "on m'a toujours dit de ne jamais appeler de fonctions dans les templates"
+- yes, but...<!-- .element: class="fragment" -->
+```typescript
+@Component({
+    signals: true,
+})
+```
+<!-- .element: class="fragment" -->
 ~
 - sinon ca se ré-exécute à chaque détection de changement
 - ca ne s'applique plus dans un composant marqué signal
@@ -572,7 +587,9 @@ export class FormField {
 - `afterRender()`
 - `afterNextRender()`
 ~
-nouvelles fonctions en v16 pour se rattacher au rendu du composant
+- nouvelles fonctions en v16 pour se rattacher au rendu du composant
+- afterNextRender: Once after the next change detection cycle.
+- afterRender(): Après chaque cycle de vie
 
 
 ### signals: true
@@ -637,6 +654,7 @@ evite d'utiliser des subjects, des Observable et des choses asynchrone pour ce q
 
 - plusieurs manières de faire la même chose<!-- .element: class="fragment" -->
 - schisme de l'écosystème<!-- .element: class="fragment" -->
+- pas de compatibilité entre libs<!-- .element: class="fragment" -->
 ~
 - //TODO résumer la RFC Summary
 
@@ -645,6 +663,7 @@ evite d'utiliser des subjects, des Observable et des choses asynchrone pour ce q
 
 - plus simple<!-- .element: class="fragment" -->
 - support LTS<!-- .element: class="fragment" -->
+- flux de controle<!-- .element: class="fragment" -->
 - ne remplace pas rxjs<!-- .element: class="fragment" -->
 ~
 Ce n'est pas la mort d'rxjs
@@ -652,7 +671,7 @@ Ce n'est pas la mort d'rxjs
 
 ### Zoneless applications
 - applications sans Zone.js
-- ne veut pas dire que Zone.js est abandonné
+- ne veut pas dire que Zone.js est abandonné<!-- .element: class="fragment" -->
 ~
 An application would have to fully track its model in signals to completely remove dependency on zone.js.
 
