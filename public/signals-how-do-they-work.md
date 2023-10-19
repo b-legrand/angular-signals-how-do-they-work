@@ -41,16 +41,6 @@ par example excel, vous mettez une formule de calcul dans une cellule
 mention de knockout.js
 
 
-### Comment ?
-
-- Value-based
-- Observable-based<!-- .element: class="fragment" -->
-- Signal-based<!-- .element: class="fragment" -->
-~
-- Value-based; that is, dirty-checking: (Angular, React, Svelte)
-- Observable-based: (Angular with RxJS, Svelte)
-- Signal-based: (Angular with signals, Qwik, React with MobX, Solid, Vue)
-
 
 ## Le passé
 <img src="back-to-the-future-3.jpg" alt="Image du film retour vers le futur 3, doc et marty en costume de cowboy">
@@ -63,20 +53,11 @@ mention de knockout.js
 - je recois une donnée<!-- .element: class="fragment" -->
 - mise à jour manuelle partout où on l'affiche<!-- .element: class="fragment" -->
 - Vanilla js / jQuery<!-- .element: class="fragment" -->
-- single source of truth<!-- .element: class="fragment" -->
 ~
-jQuery ou Vanilla, pareil, pas de réactivité dans le language de base
+- jQuery ou Vanilla, pareil, pas de réactivité dans le language de base
 dirty-checking
-
-
-### double data binding / value based
-
-- je mets ma donnée dans un objet js 
-- je fait en sorte que le DOM se mettre a jour automagiquement<!-- .element: class="fragment" -->
-~
-- déjà dans Flex
-- MVC
-- redux state management
+- single source of truth<!-- .element: class="fragment" -->
+- 2e problème asynchrone
 
 
 ### The only constant is change
@@ -85,8 +66,9 @@ dirty-checking
 - asynchrone contaminant<!-- .element: class="fragment" -->
 - async / await<!-- .element: class="fragment" -->
 ~
-Quand on parle de réactivité, on peut gérer de l'asynchrone
-Soit la valeur existe soit elle n'existe pas encore.
+- Quand on parle de réactivité, on peut gérer de l'asynchrone
+- Soit la valeur existe soit elle n'existe pas encore.
+- En angular (2) les solutions pour ca sont basées sur: rxjs, et zone.js
 
 
 ### rxjs
@@ -94,9 +76,9 @@ Soit la valeur existe soit elle n'existe pas encore.
 - Observable&lt;Value&gt; 🔍
 - yes, but...<!-- .element: class="fragment" -->
 ~
-angular fondamentalement basé sur les observables
-un observable encapsule une valeur qui change au fil du temps
-et peut changer plusieurs fois.
+- angular fondamentalement basé sur les observables
+- un observable encapsule une valeur qui change au fil du temps
+- et peut changer plusieurs fois.
 
 
 #### creation operators
