@@ -32,7 +32,7 @@ Qu'est ce que ca veut dire pour le futur du framework
 
 - 🤷‍ le fait de réagir
 - "Reactive Programming is a declarative programming paradigm built on data-centric event emitters." (Ryan Carniato)<!-- .element: class="fragment" -->
-- // TODO excel screenshot<!-- .element: class="fragment" -->
+<img src="frp-excel.gif" alt="Gif animé de cellules" class="fragment">
 ~
 - on réagit à un changement de données, a un évènement.
 - centré sur les données et leur changement.
@@ -40,6 +40,16 @@ existe depuis aussi longtemps que l'informatique
 par example excel, vous mettez une formule de calcul dans une cellule
 mention de knockout.js
 
+
+### Comment ?
+
+- Value-based
+- Observable-based<!-- .element: class="fragment" -->
+- Signal-based<!-- .element: class="fragment" -->
+~
+- Value-based; that is, dirty-checking: (Angular, React, Svelte)
+- Observable-based: (Angular with RxJS, Svelte)
+- Signal-based: (Angular with signals, Qwik, React with MobX, Solid, Vue)
 
 
 ## Le passé
@@ -56,7 +66,7 @@ mention de knockout.js
 ~
 - jQuery ou Vanilla, pareil, pas de réactivité dans le language de base
 dirty-checking
-- single source of truth<!-- .element: class="fragment" -->
+- single source of truth
 - 2e problème asynchrone
 
 
@@ -204,8 +214,8 @@ problématiques de performance
 
 ### producer and consumer
 
-Producer <---> Consumer<br/>
-    📣  <--->  👂
+Producer ⮀ Consumer<br/>
+    📣 ⮀ 👂
 ~
 - on va avoir le concept dans les observables comme les promesses
 - de qui consomme la donnée et qui la produit
@@ -237,7 +247,7 @@ Producer <---> Consumer<br/>
 ## Le présent
 <img src="back-to-the-future-1.jpg" alt="Image du film retour vers le futur, doc et marty démarrent la machine à remonter le temps">
 ~
-nouvelle primitive de base dans anular Signals API
+nouvelle primitive de base dans angular Signals API
 
 
 ### Who's got signals already ?
@@ -404,7 +414,7 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 
 ### Creusons encore
 
-<img src="signal-call-graph.svg" alt="Graphe en noeuds de differents appels de fonctions"/>
+<img src="signal-call-graph.svg" alt="Graphe en noeuds de differents appels de fonctions" class="r-stretch"/>
 ~
 - ReactiveNode: producer et consumer
 - notion de dirty
@@ -528,8 +538,8 @@ export class SimpleCounter {
 
 ### so long
 
-- @Input()
-- @Output()
+- ~~@Input()~~
+- ~~@Output()~~
 - 🫡<!-- .element: class="fragment" -->
 
 
@@ -557,10 +567,10 @@ export class FormField {
 
 ### goodbye decorators
 
-- @ViewChild()
-- @ContentChild()
-- @ViewChildren()
-- @ContentChildren()
+- ~~@ViewChild()~~
+- ~~@ContentChild()~~
+- ~~@ViewChildren()~~
+- ~~@ContentChildren()~~
 - 🫡<!-- .element: class="fragment" -->
 
 
@@ -576,17 +586,17 @@ export class FormField {
 
 ### signals: true
 
-- ngOnInit
-- ngOnDestroy
+- ngOnInit()
+- ngOnDestroy()
 
 
 ### not anymore
-- ~~ngOnChanges~~
-- ~~ngDoCheck~~
-- ~~ngAfterViewInit~~
-- ~~ngAfterContentInit~~
-- ~~ngAfterViewChecked~~
-- ~~ngAfterContentChecked~~
+- ~~ngOnChanges()~~
+- ~~ngDoCheck()~~
+- ~~ngAfterViewInit()~~
+- ~~ngAfterContentInit()~~
+- ~~ngAfterViewChecked()~~
+- ~~ngAfterContentChecked()~~
 - 🫡<!-- .element: class="fragment" -->
 
 
@@ -646,14 +656,14 @@ evite d'utiliser des subjects, des Observable et des choses asynchrone pour ce q
 - plus simple<!-- .element: class="fragment" -->
 - support LTS<!-- .element: class="fragment" -->
 - flux de controle<!-- .element: class="fragment" -->
-- ne remplace pas rxjs<!-- .element: class="fragment" -->
+- ⚠️ ne remplace pas rxjs<!-- .element: class="fragment" -->
 ~
 Ce n'est pas la mort d'rxjs
 
 
 ### Zoneless applications
 - applications sans Zone.js
-- ne veut pas dire que Zone.js est abandonné<!-- .element: class="fragment" -->
+- ⚠️ ne veut pas dire que Zone.js est abandonné<!-- .element: class="fragment" -->
 ~
 An application would have to fully track its model in signals to completely remove dependency on zone.js.
 
