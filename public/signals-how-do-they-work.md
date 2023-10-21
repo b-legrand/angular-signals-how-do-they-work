@@ -1,16 +1,21 @@
 # Angular signals: how do they work ??? 
 
 <img src="angular.svg" height="90vh" alt="logo angular"/>
+
 ---
-Dans ce talk je vais vous parler des signals, une nouvelle api d'angular
+- Bonjour, dans ce talk je vais vous parler des signals, une nouvelle api d'angular pour faire de la réactivité
+- Comment ca va nous changer la vie en tant que devs angular
+- Et surtout qu'est ce que ca veut dire pour le futur du framework
 
 
 <img src="icp-magnets.webp" alt="Insane Clown Possee">
 <p class="half-size">
 "Fucking magnets, how do they work?"<br/>
 <i>Insane Clown Possee - Miracles</i></p>
+
 ---
-Si vous connaissez ce même, vous êtes sur internet depuis trop longtemps.
+- j'ai la référence
+- Si vous connaissez ce même, vous êtes sur internet depuis trop longtemps.
 
 
 
@@ -22,10 +27,6 @@ Si vous connaissez ce même, vous êtes sur internet depuis trop longtemps.
 - 🧙‍♂️ 15 ans d'XP<!-- .element: class="fragment" -->
 - 🅰️️ Angular enjoyer<!-- .element: class="fragment" -->
 - 🎸 musique / ⌨️ claviers<!-- .element: class="fragment" -->
----
-Dans ce talk je vais vous parler des signals, une nouvelle api d'angular
-Et comment ca va nous changer la vie en tant que devs angular
-Qu'est ce que ca veut dire pour le futur du framework
 
 
 ### La réactivité
@@ -33,12 +34,14 @@ Qu'est ce que ca veut dire pour le futur du framework
 - 🤷‍ le fait de réagir
 - "Reactive Programming is a declarative programming paradigm built on data-centric event emitters." (Ryan Carniato)<!-- .element: class="fragment" -->
 <img src="frp-excel.gif" alt="Gif animé de cellules" class="fragment">
+
 ---
 - on réagit à un changement de données, a un évènement.
-- centré sur les données et leur changement.
-existe depuis aussi longtemps que l'informatique
-par example excel, vous mettez une formule de calcul dans une cellule
-mention de knockout.js
+- modèle de programmation déclarative basée sur des émetteurs d'évenements, et centrée sur les données et leur changement.
+- ryan carniato : papa de solid
+- le concept existe depuis aussi longtemps que l'informatique
+- par example excel, vous mettez une formule de calcul dans une cellule
+- mention de knockout.js
 
 
 ### Comment ?
@@ -46,6 +49,7 @@ mention de knockout.js
 - Value-based
 - Observable-based<!-- .element: class="fragment" -->
 - Signal-based<!-- .element: class="fragment" -->
+
 ---
 - Value-based; that is, dirty-checking: (Angular, React, Svelte)
 - Observable-based: (Angular with RxJS, Svelte)
@@ -54,6 +58,7 @@ mention de knockout.js
 
 ## Le passé
 <img src="back-to-the-future-3.jpg" alt="Image du film retour vers le futur 3, doc et marty en costume de cowboy">
+
 ---
 - comment on faisait avant ?
 
@@ -63,6 +68,7 @@ mention de knockout.js
 - je recois une donnée<!-- .element: class="fragment" -->
 - mise à jour manuelle partout où on l'affiche<!-- .element: class="fragment" -->
 - Vanilla js / jQuery<!-- .element: class="fragment" -->
+
 ---
 - jQuery ou Vanilla, pareil, pas de réactivité dans le language de base
 dirty-checking
@@ -78,7 +84,7 @@ dirty-checking
 ---
 - Quand on parle de réactivité, on peut gérer de l'asynchrone
 - Soit la valeur existe soit elle n'existe pas encore.
-- En angular (2) les solutions pour ca sont basées sur: rxjs, et zone.js
+- En angular (v2++) les solutions pour ca sont basées sur: rxjs, et zone.js
 
 
 ### rxjs
@@ -86,9 +92,9 @@ dirty-checking
 - Observable&lt;Value&gt; 🔍
 - yes, but...<!-- .element: class="fragment" -->
 ---
-- angular fondamentalement basé sur les observables
+- angular est fondamentalement basé sur les observables
 - un observable encapsule une valeur qui change au fil du temps
-- et peut changer plusieurs fois.
+- j'adore RxJS, c'est super puissant pour exprimer déclarativement des changements au fil du temps, mais: c'est complexe
 
 
 #### creation operators
@@ -117,6 +123,9 @@ dirty-checking
 - zip
 
 <!-- .element: class="stamps" -->
+
+---
+- Ici on a les opérateurs à connaitre quand on veut créer des observables
 
 
 #### Transformation operators
@@ -152,6 +161,9 @@ dirty-checking
 
 <!-- .element: class="stamps" -->
 
+---
+- Ici quand on veut les manipuler ou les transformer
+
 
 #### Filtering Operators
 
@@ -183,6 +195,9 @@ dirty-checking
 
 <!-- .element: class="stamps" -->
 
+---
+- Si on veut filtrer ou transformer les valeurs c'est encore un autre délire
+
 
 ### yes, but...
 
@@ -190,7 +205,9 @@ dirty-checking
 - marche d'entrée HAUTE<!-- .element: class="fragment" -->
 - unsubscribe / fuites mémoires<!-- .element: class="fragment" -->
 ---
-gestion de l'unsubscribe() pas simple, source de fuites mémoires.
+- gestion de l'unsubscribe() pas simple
+- modéle mental du cycle de vie d'un observable à avoir
+-  source de fuites mémoires.
 
 
 ### Zone.js
@@ -199,7 +216,8 @@ gestion de l'unsubscribe() pas simple, source de fuites mémoires.
 - asynchrone / microtasks<!-- .element: class="fragment" -->
 - détection de changement<!-- .element: class="fragment" -->
 ---
-problématiques de performance
+- problématiques de performance
+- intégration de librairie tierces problématiques ( runOutsideAngular )
 
 
 ### détection de changement angular
@@ -210,6 +228,7 @@ problématiques de performance
 ---
 - ici on compare cycle de vie aussi versus réactivité
 - c'est pas "granulaire" = on re-rends tout un composant au lieu de juste ce qui a changé
+- rien que le reparcours de l'arbre peut piquer
 
 
 ### producer and consumer
@@ -218,8 +237,9 @@ Producer ⮀ Consumer<br/>
     📣 ⮀ 👂
 ---
 - on va avoir le concept dans les observables comme les promesses
+- ( comme dans plein d'implémentations réactive )
 - de qui consomme la donnée et qui la produit
-- dans quel sens ?
+- dans quel sens ? ( push vs pull )
 
 
 ### Push vs pull table
@@ -246,8 +266,10 @@ Producer ⮀ Consumer<br/>
 
 ## Le présent
 <img src="back-to-the-future-1.jpg" alt="Image du film retour vers le futur, doc et marty démarrent la machine à remonter le temps">
+
 ---
-nouvelle primitive de base dans angular Signals API
+- nouvelle primitive de base dans angular Signals API
+- qu'est ce que ca veut dire
 
 
 ### Who's got signals already ?
@@ -262,7 +284,7 @@ nouvelle primitive de base dans angular Signals API
 - Pikachu
 ---
 - les bonnes idées sont contagieuses
-- concept existe déjà dans d'autre frameworks
+- le concept existe déjà dans d'autre frameworks
 - y'en a un la dedans c'est un pokemon
 
 
@@ -291,11 +313,12 @@ nouvelle primitive de base dans angular Signals API
   - #3 : [Signal-based components](https://github.com/angular/angular/discussions/49682)
   - #4 : [Observable and signal interactivity](https://github.com/angular/angular/discussions/49681)
 ---
-Request For Comments = discussion / demande de l'avis des devs
-Néanmoins pas mal de directions pour le futur d'angular avec les signals sont là
+- Request For Comments = discussion / demande de l'avis des devs
+- pas stable, pas une roadmap, une RFC peut être annulée ou modifiée
+- Néanmoins pas mal de directions pour le futur d'angular avec les signals sont là
 
 
-### a Signal, api
+### Signal, l'API :
 
 ```typescript [|2]
 interface Signal<T> {
@@ -318,7 +341,7 @@ console.log(counter()); // 0
 ```
 ---
 - factory method pour creer un signal
-- 
+- c'est synchrone
 
 
 ### un signal c'est un getter
@@ -339,7 +362,6 @@ interface WritableSignal<T> extends Signal<T> = {
 ---
 - set va changer les valeurs, changer complètement, replace l'ancienne
 - update va vous permettre de passer une méthode de mise à jour a partir de l'ancienne valeur ( redux reducer, immutable )
-- ils avaient aussi mutate dans l'api mais en cours de suppression
 - asReadOnly donne une version lecture seule du signal
 
 
@@ -357,7 +379,8 @@ counter.update(currentValue => currentValue + 1);
 ```
 ---
 - à noter: tout est synchrone
-- 
+- il existait aussi mutation, mais supprimé
+- immutabilité ftw
 
 
 ### computed()
@@ -374,7 +397,6 @@ const color = computed(() => isEven() ? 'red' : 'blue');
 ---
 - souvent on veut des valeurs dérivées d'autres
 - computed est là pour ca
-- liste et pagination, offset est dérivée de currentPage et itemsPerPage
 
 
 ### effect()
@@ -410,19 +432,21 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 ---
 - core/primitive : https://github.com/angular/angular/tree/main/packages/core/primitives/signals
 - à noter : le signalFn() dans une fonction interne, permets aux fonctions de garder une référence du this
+- producerAccessed vient du module "graph" >>
 
 
 ### Creusons encore
 
 <img src="signal-call-graph.svg" alt="Graphe en noeuds de differents appels de fonctions" class="r-stretch"/>
+
 ---
-- ReactiveNode: producer et consumer
-- notion de dirty
-- chaque fois qu'un signal est appelé, le producer est créé
-- je vais pas plus loin, mais allez lire le code source
+- ReactiveNode: peut être producer ou consumer, ou les deux
+- notion de dirty sur un noeud
+- chaque fois qu'un signal est crée un producer est crée, quand un signal est appelé, un noeud consumer est crée / actualisé
+- je vais pas plus loin, allez lire le code source de vos frameworks, c'est instructif
 
 
-### avantages
+### Avantages
 
 <img src="kill-bill-beard.gif" alt="Image d'un sage / mentor asiatique, au cheveux blancs et à la barbe longue, faisant voler ses longs poils d'un revers de la main et avec un air de défiance"/>
 
@@ -432,6 +456,7 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 ---
 - Simplicité
 - courbe d'apprentissage réduite
+- synchrone
 
 
 
@@ -452,8 +477,8 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 https://github.com/angular/angular/discussions/49682
 <!-- .element: class="half-size" -->
 ---
-- il va falloir marquer vos composants comme étant "signal base" ( standalone base ? )
-- 
+- il va falloir marquer vos composants comme étant "signal-based" ( standalone base ? )
+- ca va changer la manière en interne dont angular gère les expressions et le rendu
 
 
 ### signal-based component
@@ -579,8 +604,8 @@ export class FormField {
 - `afterRender()`
 - `afterNextRender()`
 ---
-- nouvelles fonctions en v16 pour se rattacher au rendu du composant
-- afterNextRender: Once after the next change detection cycle.
+- nouvelles fonctions apparues en v16 pour se rattacher au rendu du composant
+- afterNextRender(): Once after the next change detection cycle.
 - afterRender(): Après chaque cycle de vie
 
 
@@ -588,6 +613,8 @@ export class FormField {
 
 - ngOnInit()
 - ngOnDestroy()
+---
+- le cycle de vie d'un composant signal-based se résume à ca
 
 
 ### not anymore
@@ -630,9 +657,9 @@ Your kids are gonna love it
 - component <-> template<!-- .element: class="fragment" -->
 - état simple<!-- .element: class="fragment" -->
 ---
-Pour l'instant tant que tout l'ècosystême n'a pas suivi, c'est le seul intérêt
-Permets une réactivité plus fine
-evite d'utiliser des subjects, des Observable et des choses asynchrone pour ce qui devrait être synchrone
+- Pour l'instant tant que tout l'ècosystême n'a pas suivi, c'est le seul intérêt
+- Permets une réactivité plus fine
+- Évite d'utiliser des subjects, des Observable et des choses asynchrone pour ce qui devrait être synchrone
 
 
 ### interopérabilité 
@@ -640,6 +667,8 @@ evite d'utiliser des subjects, des Observable et des choses asynchrone pour ce q
 - toSignal(o: Observable): Signal<!-- .element: class="fragment" -->
 - toObservable(s: Signal): Observable<!-- .element: class="fragment" -->
 ---
+- on va pouvoir migrer tranquillement de l'un à l'autre
+- signal ne remplacera jamais observable
 
 
 ### inconvénients / craintes
@@ -649,23 +678,26 @@ evite d'utiliser des subjects, des Observable et des choses asynchrone pour ce q
 - pas de compatibilité entre libs<!-- .element: class="fragment" -->
 ---
 - //TODO résumer la RFC Summary
+- pas dans le language
 
 
 ### avantages / le futur d'angular
 
 - plus simple<!-- .element: class="fragment" -->
 - support LTS<!-- .element: class="fragment" -->
-- flux de controle<!-- .element: class="fragment" -->
+- flux de contrôle ( @if, @for, @switch )<!-- .element: class="fragment" -->
 - ⚠️ ne remplace pas rxjs<!-- .element: class="fragment" -->
 ---
-Ce n'est pas la mort d'rxjs
+- Ce n'est pas la mort d'rxjs
 
 
 ### Zoneless applications
 - applications sans Zone.js
 - ⚠️ ne veut pas dire que Zone.js est abandonné<!-- .element: class="fragment" -->
 ---
-An application would have to fully track its model in signals to completely remove dependency on zone.js.
+- An application would have to fully track its model in signals to completely remove dependency on zone.js.
+- bien pour les nouvelles applis
+- ne migrez pas sans zone.js sans réfléchir, vous allez avoir des problèmes
 
 
 ### roadmap et librairies à cotê
@@ -674,15 +706,21 @@ An application would have to fully track its model in signals to completely remo
   - [NgRx SignalStore](https://github.com/ngrx/platform/discussions/3796]) 
   - [rx-angular](https://github.com/rx-angular/rx-angular/pull/1523)
   - [NGXS](https://github.com/ngxs/store/discussions/1977)
+---
+- toutes les libs de gestion d'état angular
+  - on compris l'intêret
+  - ont une RFC pour l'adopter
 
 
 
 ## Conclusion
 
 <img src="quoi-on-dit-des-signaux.jpg">
+
 ---
-J'en ai terminé, boule de cristal avenir angular
-Merci de m'avoir écouté.
+- J'en ai terminé
+- boule de cristal sur l'avenir angular
+- Merci de m'avoir écouté.
 
 
 ### Sources
