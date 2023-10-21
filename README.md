@@ -1,23 +1,38 @@
-# Angular signals : how do they work.
+# Angular signals : how do they work ???
 
 ![](./public/icp-magnets.webp)
 
 ## Abstract
 
-- le passé. la réactivité ( 5 minutes max )
+```
+On était tranquille là à faire de la réactivité avec RxJS dans nos applications angular,
+
+Et voilà que la core team nous sort une nouvelle primitive pour ça : `signal()`.
+
+C'est quoi la réactivité d'abord ? C'est quoi un signal ? 
+
+Est ce que vous devez absolument les utiliser au lieu d'RxJS ? ( spoiler: non )
+
+Bref, comment ça marche les signals en angular ? ( quoi, on dit des signaux ? )
+```
+
+## Plan
+- le passé,la réactivité
 
   - push vs pull
-  - comment on faisait avant : Zone.js / React
-  - rxjs.Subject
+  - comment on faisait avant : 
+    - Zone.js
+    - Observable 
+    - détection de changement
 
-- le présent. un signal c'est quoi ? ( 7 minutes max )
+- le présent. un signal c'est quoi ? 
 
   - c'est un getter. générique. fin du talk
   - writable signals
   - computed
   - effect
 
-- le futur. ( 3 minutes max )
+- le futur, signal-based components
   - où et quand utiliser signals vs rxjs ?
   - avantages, inconvénients
   - qu'est ce que ca veut dire pour le futur d'angular
@@ -31,8 +46,3 @@
 - [How React isn't reactive and why you should'nt care](https://dev.to/this-is-learning/how-react-isn-t-reactive-and-why-you-shouldn-t-care-152m)
 - https://www.builder.io/blog/unified-reactivity-theory
 
-## TODO post review
-
-- schéma du graph d'appel post 
-- détailler un peu plus la réactivité
-- illustrations back to the future / emoji
