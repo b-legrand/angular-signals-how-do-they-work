@@ -465,26 +465,9 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 <img src="back-to-the-future-2.jpg" alt="Image du film retour vers le futur, doc et marty sont dans leur futur">
 
 
-### intégration avec angular:<br/> Signal-based components
-
-```typescript
-@Component({
-  signals: true,
-  // ...
-})
-```
-
-https://github.com/angular/angular/discussions/49682
-<!-- .element: class="half-size" -->
----
-- il va falloir marquer vos composants comme étant "signal-based" ( standalone base ? )
-- ca va changer la manière en interne dont angular gère les expressions et le rendu
-
-
 ### signal-based component
-```typescript [|2|10|13|5-6]
+```typescript [|9|12|4-5]
 @Component({
-  signals: true,
   selector: 'temperature-calc',
   template: `
     <p>C: {{ celsius() }}</p>
@@ -502,13 +485,6 @@ export class SimpleCounter {
 
 ### oui mais....
 - "on m'a toujours dit de ne jamais appeler de fonctions dans les templates"
-- yes, but...<!-- .element: class="fragment" -->
-```typescript
-@Component({
-    signals: true,
-})
-```
-<!-- .element: class="fragment" -->
 ---
 - sinon ca se ré-exécute à chaque détection de changement
 - ca ne s'applique plus dans un composant marqué signal
@@ -517,9 +493,8 @@ export class SimpleCounter {
 
 ### inputs
 
-```typescript [|5-6|11,14]
+```typescript [|4-5|10,13|15-16]
 @Component({
-  signals: true,
   selector: 'user-profile',
   template: `
     <p>Name: {{ firstName() }} {{ lastName() }}</p>
@@ -539,9 +514,8 @@ export class UserProfile {
 
 ### outputs
 
-```typescript [|5-6|10-11|12-17]
+```typescript [|4-5|9-10|11-16]
 @Component({
-  signals: true,
   selector: 'simple-counter',
   template: `
     <button (click)="save()">Save count</button>
@@ -568,9 +542,8 @@ export class SimpleCounter {
 - 🫡<!-- .element: class="fragment" -->
 
 
-```typescript [|5|7|12-13|16]
+```typescript [|4|6|11-12|15]
 @Component({
-  signals: true,
   selector: 'form-field',
   template: `
     <field-icon *ngFor="let icon of icons()"> {{ icon }} </field-icon>
@@ -609,7 +582,7 @@ export class FormField {
 - afterRender(): Après chaque cycle de vie
 
 
-### signals: true
+### simplify
 
 - ngOnInit()
 - ngOnDestroy()
@@ -638,6 +611,7 @@ Your kids are gonna love it
 
 - `signal()`, `computed()` et `effect()`
 - __developer preview__ en v16
+- __stable__ en v17 <!-- .element: class="fragment" -->
 
 <!-- .element: class="fragment" -->
 
