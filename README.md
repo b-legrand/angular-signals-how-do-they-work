@@ -45,4 +45,12 @@ Bref, comment ça marche les signals en angular ? ( quoi, on dit des signaux ? )
 - [The evolution of signals in javascript](https://dev.to/this-is-learning/the-evolution-of-signals-in-javascript-8ob)
 - [How React isn't reactive and why you should'nt care](https://dev.to/this-is-learning/how-react-isn-t-reactive-and-why-you-shouldn-t-care-152m)
 - https://www.builder.io/blog/unified-reactivity-theory
+- [Ben Lesh's advice](https://x.com/BenLesh/status/1775207971410039230)
 
+## TODO longer version
+
+- [ ] schéma du graph d'appel à découper
+- [ ] watchers
+- [ ] partie benlesh | quand utiliser signals vs rxjs
+- [ ] partie comment migrer -> model, api composant inchangée, changement dans les templates, dans les tests, control flow
+- [ ] ajouter une partie sur la proposition TC39 : https://github.com/tc39/proposal-signals 

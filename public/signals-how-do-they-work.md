@@ -33,20 +33,22 @@
 
 - 🤷‍ le fait de réagir
 - "Reactive Programming is a declarative programming paradigm built on data-centric event emitters." (Ryan Carniato)<!-- .element: class="fragment" -->
-<img src="frp-excel.gif" alt="Gif animé de cellules" class="fragment">
-
 ---
-- on réagit à un changement de données, a un évènement.
-- modèle de programmation déclarative basée sur des émetteurs d'évenements, et centrée sur les données et leur changement.
 - ryan carniato : papa de solid
+- on réagit à un changement de données, a un évènement.
+- centré sur les données et leur changement.
+- existe depuis aussi longtemps que l'informatique
+
+
+<img src="frp-excel.gif" alt="Gif animé de cellules">
+---
 - le concept existe depuis aussi longtemps que l'informatique
 - par example excel, vous mettez une formule de calcul dans une cellule
-- mention de knockout.js
 
 
 ### Comment ?
 
-- Value-based
+- Value-based<!-- .element: class="fragment" -->
 - Observable-based<!-- .element: class="fragment" -->
 - Signal-based<!-- .element: class="fragment" -->
 
@@ -204,6 +206,7 @@ dirty-checking
 - API... <span class="fragment">foisonnante</span>
 - marche d'entrée HAUTE<!-- .element: class="fragment" -->
 - unsubscribe / fuites mémoires<!-- .element: class="fragment" -->
+<li><span class="color-red">red</span> / <span class="color-blue">blue</span> methods</li><!-- .element: class="fragment" -->
 ---
 - gestion de l'unsubscribe() pas simple
 - modéle mental du cycle de vie d'un observable à avoir
@@ -216,8 +219,24 @@ dirty-checking
 - asynchrone / microtasks<!-- .element: class="fragment" -->
 - détection de changement<!-- .element: class="fragment" -->
 ---
+- déjà eu des soucis avec ou pas du tout
+- se place entre votre code et vos callbacks/asynchrones
+- Mais nécéssaire à la détection de changement "standard"
+
+
+### Yes, but...
+
+- Performance 🐌(runOutsideAngular)<!-- .element: class="fragment" -->
+- 30kb de JS 🚚<!-- .element: class="fragment" -->
+- Stacktraces 🕵️‍♂ <!-- .element: class="fragment" -->
+- Pas d'async/await natif<!-- .element: class="fragment" -->
+- Magique 🎩<!-- .element: class="fragment" -->
+---
+Inconvénients de zone.js
+- contexte d'exécution trop "magique" pour les devs
 - problématiques de performance
 - intégration de librairie tierces problématiques ( runOutsideAngular )
+
 
 
 ### détection de changement angular
@@ -300,6 +319,7 @@ Producer ⮀ Consumer<br/>
 - 🎉 Angular 🎉
 ---
 - on va adopter un concept qui existe déjà ailleurs
+- notez qu'il y a pas React dans cette liste
 - comment on réconcilie tout ca ?
 
 
@@ -320,7 +340,7 @@ Producer ⮀ Consumer<br/>
 
 ### Signal, l'API :
 
-```typescript [|2]
+```typescript [|2|3]
 interface Signal<T> {
   (): T;
   [SIGNAL]: unknown;
@@ -351,7 +371,7 @@ console.log(counter()); // 0
 
 ### WritableSignal
 
-```typescript [|2|3|4]
+```typescript [|2|3|4|5]
 interface WritableSignal<T> extends Signal<T> = {
   (): T;
   set(value: T): void;
@@ -379,7 +399,6 @@ counter.update(currentValue => currentValue + 1);
 ```
 ---
 - à noter: tout est synchrone
-- il existait aussi mutation, mais supprimé
 - immutabilité ftw
 
 
@@ -416,6 +435,11 @@ Cas d'utilisation:
 
 ### Creusons un peu 
 
+<https://github.com/angular/angular/blob/main/packages/core/primitives/signals/src/signal.ts>
+
+
+### Creusons un peu
+
 ```typescript [|2|6-9|10|7]
 export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): WritableSignal<T> {
   const node: SignalNode<T> = Object.create(SIGNAL_NODE);
@@ -432,7 +456,51 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 ---
 - core/primitive : https://github.com/angular/angular/tree/main/packages/core/primitives/signals
 - à noter : le signalFn() dans une fonction interne, permets aux fonctions de garder une référence du this
-- producerAccessed vient du module "graph" >>
+- producerAccessed et SIGNAL_NODE viennent du module "graph" >>
+
+
+### Creusons un peu
+
+```typescript
+const SIGNAL_NODE: SignalNode<unknown> = {
+  ...REACTIVE_NODE,
+  value: undefined,
+  equals: defaultEquals,
+}
+```
+---
+- Cet objet "Node", il hérite de REACTIVE_NODE, ici c'est les valeurs par défaut.
+- en lui mettant juste une valeur, et une méthode equals
+- cet objet REACTIVE_NODE, qui est un objet avec des méthodes et des propriétés pour gérer la réactivité
+- si on regarde REACTIVE_NODE
+
+
+### Creusons plus
+
+```typescript[|4|]
+export const REACTIVE_NODE: ReactiveNode = {
+  version: 0 as Version,
+  lastCleanEpoch: 0 as Version,
+  dirty: false,
+  producerNode: undefined,
+  producerLastReadVersion: undefined,
+  producerIndexOfThis: undefined,
+  nextProducerIndex: 0,
+  liveConsumerNode: undefined,
+  liveConsumerIndexOfThis: undefined,
+  consumerAllowSignalWrites: false,
+  consumerIsAlwaysLive: false,
+  producerMustRecompute: () => false,
+  producerRecomputeValue: () => {},
+  consumerMarkedDirty: () => {},
+  consumerOnSignalRead: () => {},
+};
+```
+---
+- L'objet SignalNode qui a été créé quand on a appelé signal(), il contient tout ça par défaut
+- Bien plus compliqué qu'un simple getter
+- permets de gérer les dépendances entre les signaux, de savoir qui produit quoi, qui consomme quoi, et si le signal doit étre recalculé
+- on a des notions de dirty, de version, de producer, de consumer, vous allez jamais toucher à ca, tout ce que vous devez comprendre, c'est quand interne, on construit un graphe de noeuds.
 
 
 ### Creusons encore
@@ -440,10 +508,44 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 <img src="signal-call-graph.svg" alt="Graphe en noeuds de differents appels de fonctions" class="r-stretch"/>
 
 ---
+- si on reprends les examples
 - ReactiveNode: peut être producer ou consumer, ou les deux
 - notion de dirty sur un noeud
 - chaque fois qu'un signal est crée un producer est crée, quand un signal est appelé, un noeud consumer est crée / actualisé
+
+// todo découper en deux slides pour plus de lisibilité
+
+
+### La pièce manquante... ?
+
+- 🧩 PUSH<!-- .element: class="fragment" -->
+---
+- On a vu que tout ca était un peu plus compliqué qu'un simple getter; mais par rapport à mon tableau push / pull de tout à l'heure, il manque le push.
+- comment on fait pour que les signaux soient notifiés de changements ?
+- bah vous, en tant que devs, vous ne faites rien. Angular s'en charge pour vous
+
+
+### Watcher 👀
+
+```typescript
+const WATCH_NODE: Partial<WatchNode> = {
+  ...REACTIVE_NODE,
+  consumerIsAlwaysLive: true,
+  consumerAllowSignalWrites: false,
+  consumerMarkedDirty: (node: WatchNode) => {
+    if (node.schedule !== null) {
+      node.schedule(node.ref);
+    }
+  },
+  hasRun: false,
+  cleanupFn: NOOP_CLEANUP_FN,
+}
+```
+---
+- Vous allez jamais utiliser ca directement, à moins de creer votre propre framework
+- En gros chaque fois qu'un signal est appelé dans un composant, un watcher est créé, c'est lui qui va avoir une gestion d'abonnement / subscribe
 - je vais pas plus loin, allez lire le code source de vos frameworks, c'est instructif
+- à retenir: graphe de noeuds, consumer-producer.
 
 
 ### Avantages
@@ -454,15 +556,29 @@ export function signal<T>(initialValue: T, options?: CreateSignalOptions<T>): Wr
 - and sometimes the best solution is a function<!-- .element: class="fragment" -->
 - not a class, not a decorator. just a function<!-- .element: class="fragment" -->
 ---
-- Simplicité
+- Simplicité de l'api.
 - courbe d'apprentissage réduite
 - synchrone
+
+
+### avantages (2)
+- lazily computed evaluation
+- "glitch-free"<!-- .element: class="fragment" -->
+- granular reactivity<!-- .element: class="fragment" -->
+---
+- on recalcule une valeur uniquement quand elle est lue, pas à chaque changement de dépendance
+- pas de recalcul inutile, mis en cache / memoisé, si une partie du graphe n'est pas dirty, pas recalculé.
+- https://github.com/tc39/proposal-signals?tab=readme-ov-file#core-features
 
 
 
 ## LE FUTUR
 
 <img src="back-to-the-future-2.jpg" alt="Image du film retour vers le futur, doc et marty sont dans leur futur">
+---
+- Futur qui est en fait le présent (2015)
+- Qu'est ce que ca veut dire pour le futur d'angular et comment ça s'utilise
+- Ou plutôt ça veut dire quoi pour vous, dev utilisateur et trices du framework.
 
 
 ### signal-based component
@@ -484,10 +600,10 @@ export class SimpleCounter {
 
 
 ### oui mais....
-- "on m'a toujours dit de ne jamais appeler de fonctions dans les templates"
+- "on m'a toujours dit d'éviter d'appeler de fonctions dans les templates"
 ---
 - sinon ca se ré-exécute à chaque détection de changement
-- ca ne s'applique plus dans un composant marqué signal
+- ca ne s'applique plus dans un composant signal-based
 - les expressions ne se réevalue que quand le signal a changé 
 
 
@@ -507,6 +623,9 @@ export class UserProfile {
 
   // Create an input with a default value
   lastName = input('Smith'); // Signal<string>
+
+  // required inputs !
+  required = input.required<number>();
 
 }
 ```
@@ -531,6 +650,43 @@ export class SimpleCounter {
   reset() {
     this.cleared.emit(456);
   }
+}
+```
+
+
+### model
+
+```typescript [|4-7|11-12]
+@Component({
+  selector: 'text-field',
+  template: `
+    <input
+      [value]="value"
+      (change)="valueChange.emit($event)"
+    />
+  `,
+})
+export class TextField {
+  @Input() value: string = "";
+  @Output() valueChange = new EventEmitter<string>();
+}
+```
+
+
+### model (2)
+
+```typescript [|4-7|11-12]
+@Component({
+  selector: 'text-field',
+  template: `
+    <input
+      [value]="value()"
+      (change)="valueChange.set($event)"
+    />
+  `,
+})
+export class TextField {
+  value = model("");
 }
 ```
 
@@ -570,6 +726,9 @@ export class FormField {
 - ~~@ViewChildren()~~
 - ~~@ContentChildren()~~
 - 🫡<!-- .element: class="fragment" -->
+---
+Ca simplifie beaucoup
+Et on peut encore simplifier plus, surtout le lifecycle
 
 
 ### Application Lifecycle
@@ -607,33 +766,38 @@ export class FormField {
 Your kids are gonna love it
 
 
-### Statut actuel
-
-- `signal()`, `computed()` et `effect()`
-- __developer preview__ en v16
-- __stable__ en v17 <!-- .element: class="fragment" -->
-
-<!-- .element: class="fragment" -->
-
-- tout le reste n'existe pas (encore)
-- signal-based components en __developer preview__ en v17 ?
-
-<!-- .element: class="fragment" -->
+### Statut actuel (juin 2024)
+ 
+- `signal()`, `computed()` et `effect()` en __v16__
+- `input()` / `output()` / `model()` en __v17.x__ 
+- API toujours en developer preview en __v18__
+- zoneless "expérimental" en v18
 ---
 - vous pouvez déjà jouer avec
-- developer preview: ON NE VA PAS EN PROD AVEC
-- rendu / signal-based pas encore là
+- plein de nouveautés en v17.x
+- zoneless en angular 18 (expérimental)
+- évidemment ça veut dire qu'il faut surtout mettre à jour Angular
+
+
+### Signals proposal au TC39
+<img src="images/tc39.png" />
+
+https://github.com/tc39/proposal-signals
+---
+- TC39 c'est le comité qui gère les évolutions de javascript
+- ils ont une proposition de signaux ( inter-framework ) pour que ça arrive dans le language. ( de la même manière que Promise/async/await par example )
+- l'implémentation proposée est celle d'angular, mais ca peut changer, avantages: interopérabilité, devtools, standardisation
+- maintenant, la grande question qu'on se pose c'est :
 
 
 ### où et quand utiliser signals vs rxjs ?
-
 - why not both ?<!-- .element: class="fragment" -->
 - component <-> template<!-- .element: class="fragment" -->
-- état simple<!-- .element: class="fragment" -->
+- état local<!-- .element: class="fragment" -->
 ---
 - Pour l'instant tant que tout l'ècosystême n'a pas suivi, c'est le seul intérêt
 - Permets une réactivité plus fine
-- Évite d'utiliser des subjects, des Observable et des choses asynchrone pour ce qui devrait être synchrone
+- evite d'utiliser des subjects, des Observable et des choses asynchrone pour ce qui devrait être synchrone
 
 
 ### interopérabilité 
@@ -642,31 +806,80 @@ Your kids are gonna love it
 - toObservable(s: Signal): Observable<!-- .element: class="fragment" -->
 ---
 - on va pouvoir migrer tranquillement de l'un à l'autre
-- signal ne remplacera jamais observable
+- signal ne remplacera jamais observable/rxjs
 
 
-### inconvénients / craintes
+### Ben lesh's advice
+<img src="images/benlesh-thread-0.png" />
 
-- plusieurs manières de faire la même chose<!-- .element: class="fragment" -->
-- schisme de l'écosystème<!-- .element: class="fragment" -->
-- pas de compatibilité entre libs<!-- .element: class="fragment" -->
+https://x.com/BenLesh/status/1775207971410039230
 ---
-- //TODO résumer la RFC Summary
-- pas dans le language
+- Ben Lesh c'est pas n'importe qui, core maintainer de rxjs
+- ce qu'il nous dit c'est que les signals sont préférable pour la gestion d'état contrairement aux observables
+- par contre dés que vous avez besoin d'annulation, de coordination, de gestion temporelle de vos évènements => rxjs
+- n'essayez pas d'utiliser l'api des signals comme rxjs, c'est une mauvaise idée 
 
 
-### avantages / le futur d'angular
+<img src="images/benlesh-thread-1.png" />
+---
+- Si vous essayez de retarder ou de cumuler des signals comme avec rxjs : débile
+- les signals ont une api de surface très très simples, mais sont beaucoup plus compliqués en interne qu'il n'y parait
+
+
+<img src="images/benlesh-thread-2.png" />
+---
+- tout les signals conservent leur état, et prennent en usage mémoire
+- "la plupart" des observables sont sans état, ils ne conservent pas leur valeur et nettoient derrière eux
+
+
+<img src="images/benlesh-thread-3.png" />
+---
+- les Signals représentent une valeur qui change au fil du temps
+- les observables représentent une collection d'evénements, et de valeurs qui changent au fil du temps 
+
+
+<img src="images/benlesh-thread-4.png" />
+---
+- Convertir d'observable vers signal, ça fait sens, ça a du sens
+- Convertir de signal vers observable, c'est un peu débile (ce qui déclenche le changement de valeur du signal, devrait plustôt d'éclencher l'émission d'un Observable)
+
+
+<img src="images/benlesh-thread-5.png" />
+---
+- Les Observables sont des fonctions composables, sophistiquées, pour manipulerdes flux d'évenements, avec un résultat garanti
+- signals sont un graphe de dépendances de valeurs, qui peuvent être recalculéées, avec une notion de notification et de cache pour éviter le recalcul
+
+
+<img src="images/benlesh-thread-6.png" />
+---
+- Tirer X valeurs
+- Pousser X valeurs
+- Lire 1 valeur (et dans un certain contexte, mettre en place un noeud dans un graphe de dépendance qui va permettre d'être notifié des changements, pouvant être lue par des consommatteurs le moment venu, et calculée une seule fois.)
+
+
+#### En résumé
+---
+- tout ce qui nécéssite une annulation, combinaison, ou manipulation temporelle: rxjs
+  - client http (progress), websockets, timers, etc
+- tout ce qui est simple, valeur uniquement, et local: signals
+  - votre état, vos inputs/oututs de composants
+
+
+### avantages / pour le futur d'angular
 
 - plus simple<!-- .element: class="fragment" -->
-- support LTS<!-- .element: class="fragment" -->
+- moins de décorateurs<!-- .element: class="fragment" -->
 - flux de contrôle ( @if, @for, @switch )<!-- .element: class="fragment" -->
+- plus besoin de pipe async et d'unsubscribe<!-- .element: class="fragment" -->
 - ⚠️ ne remplace pas rxjs<!-- .element: class="fragment" -->
 ---
 - Ce n'est pas la mort d'rxjs
 
 
 ### Zoneless applications
-- applications sans Zone.js
+- plus légères<!-- .element: class="fragment" -->
+- plus performantes<!-- .element: class="fragment" -->
+- moins "magiques"<!-- .element: class="fragment" -->
 - ⚠️ ne veut pas dire que Zone.js est abandonné<!-- .element: class="fragment" -->
 ---
 - An application would have to fully track its model in signals to completely remove dependency on zone.js.
@@ -674,27 +887,125 @@ Your kids are gonna love it
 - ne migrez pas sans zone.js sans réfléchir, vous allez avoir des problèmes
 
 
-### roadmap et librairies à cotê
 
-- RFC coté librairies de gestion d'état :
-  - [NgRx SignalStore](https://github.com/ngrx/platform/discussions/3796]) 
-  - [rx-angular](https://github.com/rx-angular/rx-angular/pull/1523)
-  - [NGXS](https://github.com/ngxs/store/discussions/1977)
+## Comment migrer ?
+
+- ⚠️ encore en developer preview (v18).
+- mais...<!-- .element: class="fragment" -->
 ---
-- toutes les libs de gestion d'état angular
-  - on compris l'intêret
-  - ont une RFC pour l'adopter
+Vous pouvez déjà jouer avec et migrer si vous aimez le risque, ou si vous avez un projet perso, mais rien ne dit que ça va pas changer.
+
+
+### 1ère étape
+- `ChangeDetectionStrategy.OnPush`
+---
+- préparez vos composants pour qu'ils n'aient plus besoin de zone.js
+- passez vos composants en ChangeDetectionStrategy.OnPush
+- ca va vous permettre de ne plus déclencher de cycle de vie inutilement
+- nécéssite d'appeler soit même la détection de changement Angular markForCheck / detectChanges
+
+
+### 2ème étape
+- `ng g @angular/core:control-flow`
+---
+- pas obligatoire, mais c'est tellement plus propre comme syntaxe
+- passez sur la nouvelle API control-flow.
+- stable/dispo en angular 17.x
+
+
+#### 3ème étape (1)
+
+- migrer les inputs et outputs de vos composants
+- `@Input()` => `input()`
+- `@Output()` => `output()`
+- `@Input()`+`@Output()` => `model()`
+---
+- Espérons qu'il y ait une schematics
+- vous pouvez migrer petit à petit
+- vous pouvez aussi migrer les composants un par un
+- avantage : même api de surface
+
+
+#### 3ème étape (2)
+
+- ajouter () partout.
+
+```diff
+- <p>{{ monInput }}</p>
++ <p>{{ monInput() }}</p>
+```
+
+sinon:
+
+```
+[Signal: "value"]
+```
+---
+- NG8109 en erreur en angular 18.
+
+
+#### 3ème étape (3), migrez vos tests
+- là ca pique un peu plus
+- `component.monInput = 2 : ` plus possible
+- utilisez `@testing-library/angular` : componentInputs
+---
+
+
+### 4ème étape
+- mettez vos observables utilisés dans des composants dans des `toSignal`
+---
+- si pas moyen de faire autrement, vous aurez le gain de ne pas avoir à vous désabonner.
+
+
+### 5ème étape
+- migrer votre gestion d'état en signal
+- ...
+- profit!
+---
+- recommandation: ne migrez pas sur une impleme naive de ngrx en signal
+- utilisez @ngrx/signals ou autre lib de gestion d'état.
+
+
+### Angular 18
+
+```typescript
+bootstrapApplication(App, {
+  providers: [
+    provideExperimentalZonelessChangeDetection()
+  ]
+});
+```
+---
+- la dernère étape
+- Pour tester ça en angular 18, il suffit de fournir le provider dans la config app.
+- ca va activer le mode zoneless
+
+
+<pre>angular.json</pre>
+```diff
+{
+  "projects": {
+    "app": {
+      "architect": {
+        "build": {
+          "options": {
+-            "polyfills": ["zone.js"],
+          }
+        }
+      }
+    }
+  }
+}
+```
 
 
 
 ## Conclusion
 
 <img src="quoi-on-dit-des-signaux.jpg">
-
 ---
-- J'en ai terminé
-- boule de cristal sur l'avenir angular
-- Merci de m'avoir écouté.
+J'en ai terminé,j'espére vous avoir donné un max d'infos pour comprendre les signals et comment les adopter.
+Merci de m'avoir écouté.
 
 
 ### Sources
