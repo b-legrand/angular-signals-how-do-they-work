@@ -719,8 +719,8 @@ Your kids are gonna love it
   </div>
   <div class="openfeedback-link">
     <h4>⬇️ Feedback ⬇️</h4>
-    <a href="https://openfeedback.io/p32EOIbP5bj4WDdz8bJs/2023-10-20/angularsignalshowdotheywork">
-      <img src="signals-openfeedback.png" alt="QRCode du lien vers openfeedback">
+    <a href="https://openfeedback.io/sunnytech2024/2024-07-04/les-signals-avec-angular-comme">
+      <img src="qrcode-signals-sunnytech.png" alt="QRCode du lien vers openfeedback">
     </a>
   </div>
 </div>
