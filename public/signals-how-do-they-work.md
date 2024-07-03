@@ -712,11 +712,12 @@ Your kids are gonna love it
 
 <div class="qr-codes">
   <div class="slides-link">
+    <h4>⬇️ Slides ⬇️</h4>
     <a href="https://b-legrand.github.io/angular-signals-how-do-they-work/">
       <img src="signals-slides.png" alt="QRCode du lien vers les slides">
     </a>
-    <h4>⬆️ Slides ⬆️</h4>
   </div>
+  <img src="logo-sunny-tech.png" style="width: 200px;height: 200px;"/>
   <div class="openfeedback-link">
     <h4>⬇️ Feedback ⬇️</h4>
     <a href="https://openfeedback.io/sunnytech2024/2024-07-04/les-signals-avec-angular-comme">
