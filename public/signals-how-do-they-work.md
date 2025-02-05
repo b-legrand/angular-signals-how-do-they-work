@@ -1028,11 +1028,11 @@ Merci de m'avoir écouté.
       <img src="signals-slides.png" alt="QRCode du lien vers les slides">
     </a>
   </div>
-  <img src="logo-sunny-tech.png" style="width: 200px;height: 200px;"/>
+  <img src="images/tourainetech2025-logo.svg" width="416" height="176" style="width:20%; margin-top: 75px"/>
   <div class="openfeedback-link">
     <h4>⬇️ Feedback ⬇️</h4>
-    <a href="https://openfeedback.io/sunnytech2024/2024-07-04/les-signals-avec-angular-comme">
-      <img src="qrcode-signals-sunnytech.png" alt="QRCode du lien vers openfeedback">
+    <a href="https://openfeedback.io/w3JorGi7ut6d9keUsCvO/2025-02-06/cm00sa3ru001coh1u5uiypqr4">
+      <img src="images/tourainetech2025-openfeedback.png" alt="QRCode du lien vers openfeedback">
     </a>
   </div>
 </div>
