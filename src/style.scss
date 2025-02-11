@@ -20,7 +20,7 @@ $backgroundColor: $crust;
 $mainColor: #fff;
 $headingColor: #fff;
 
-$mainFontSize: 42px;
+$mainFontSize: 36px;
 $mainFont: "Source Sans Pro", Helvetica, sans-serif;
 $headingFont: "Poppins", Helvetica, sans-serif;
 $headingTextShadow: none;
@@ -41,9 +41,14 @@ $heading4Size: 0.8em;
 
 // Theme template ------------------------------
 @import "reveal.js/css/theme/template/theme";
+
 // ---------------------------------------------
 iframe {
   border: none;
+}
+
+code {
+  background-color: $surface0;
 }
 
 @import "@catppuccin/highlightjs/sass/catppuccin-mocha.scss";
@@ -57,11 +62,13 @@ iframe {
   flex-direction: row;
   justify-content: space-between;
 }
-.qr-codes > div {
+
+.qr-codes>div {
   display: flex;
   flex-direction: column;
 }
-.qr-codes > div > * {
+
+.qr-codes>div>* {
   display: block;
 }
 
@@ -69,78 +76,103 @@ iframe {
 .color-rosewater {
   color: $rosewater;
 }
+
 .color-flamingo {
   color: $flamingo;
 }
+
 .color-pink {
   color: $pink;
 }
+
 .color-mauve {
   color: $mauve;
 }
+
 .color-red {
   color: $red;
 }
+
 .color-maroon {
   color: $maroon;
 }
+
 .color-peach {
   color: $peach;
 }
+
 .color-yellow {
   color: $yellow;
 }
+
 .color-green {
   color: $green;
 }
+
 .color-teal {
   color: $teal;
 }
+
 .color-sky {
   color: $sky;
 }
+
 .color-sapphire {
   color: $sapphire;
 }
+
 .color-blue {
   color: $blue;
 }
+
 .color-lavender {
   color: $lavender;
 }
+
 .color-text {
   color: $text;
 }
+
 .color-subtext1 {
   color: $subtext1;
 }
+
 .color-subtext0 {
   color: $subtext0;
 }
+
 .color-overlay2 {
   color: $overlay2;
 }
+
 .color-overlay1 {
   color: $overlay1;
 }
+
 .color-overlay0 {
   color: $overlay0;
 }
+
 .color-surface2 {
   color: $surface2;
 }
+
 .color-surface1 {
   color: $surface1;
 }
+
 .color-surface0 {
   color: $surface0;
 }
+
 .color-base {
   color: $base;
 }
+
 .color-mantle {
   color: $mantle;
 }
+
 .color-crust {
   color: $crust;
 }

@@ -27,6 +27,8 @@
 - 🧙‍♂️ 15 ans d'XP<!-- .element: class="fragment" -->
 - 🅰️️ Angular enjoyer<!-- .element: class="fragment" -->
 - 🎸 musique / ⌨️ claviers<!-- .element: class="fragment" -->
+---
+15 ans, bientôt 18
 
 
 ### La réactivité
@@ -44,6 +46,7 @@
 ---
 - le concept existe depuis aussi longtemps que l'informatique
 - par example excel, vous mettez une formule de calcul dans une cellule
+- autre example, facebook et ses messages counters.
 
 
 ### Comment ?
@@ -525,6 +528,13 @@ export const REACTIVE_NODE: ReactiveNode = {
 - bah vous, en tant que devs, vous ne faites rien. Angular s'en charge pour vous
 
 
+### L'autre pièce manquante
+
+<img src="signal-call-graph-components.svg" alt="Graphe en noeuds de differents appels de fonctions" class="r-stretch"/>
+---
+- l'autre pièce manquante pour comprendre, c'est que vous allez utiliser ça dans vos composants.
+
+
 ### Watcher 👀
 
 ```typescript
@@ -600,7 +610,7 @@ export class SimpleCounter {
 
 
 ### oui mais....
-- "on m'a toujours dit d'éviter d'appeler de fonctions dans les templates"
+"on m'a toujours dit d'éviter d'appeler de fonctions dans les templates"
 ---
 - sinon ca se ré-exécute à chaque détection de changement
 - ca ne s'applique plus dans un composant signal-based
@@ -766,7 +776,7 @@ Et on peut encore simplifier plus, surtout le lifecycle
 Your kids are gonna love it
 
 
-### Statut actuel (juin 2024)
+### Statut actuel (#1)
  
 - `signal()`, `computed()` et `effect()` en __v16__
 - `input()` / `output()` / `model()` en __v17.x__ 
@@ -777,6 +787,24 @@ Your kids are gonna love it
 - plein de nouveautés en v17.x
 - zoneless en angular 18 (expérimental)
 - évidemment ça veut dire qu'il faut surtout mettre à jour Angular
+
+
+### Statut actuel (#2: février 2025)
+- v19
+- API stable
+- nouvelles primitives `resource` et `linkedSignal`
+---
+- https://blog.angular.dev/meet-angular-v19-7b29dfd05b84 
+- je vais pas rentrer dans le détail encore expérimental
+
+
+### Angular 19
+
+- `linkedSignal()`
+- `resource()`
+---
+- linkedSignal est comme computed(), avec une gestion plus fine des valeurs précédentes.
+- `resource` permets d'avoir une notion de loader, loading / loaded / failed
 
 
 ### Signals proposal au TC39
@@ -858,6 +886,10 @@ https://x.com/BenLesh/status/1775207971410039230
 
 
 #### En résumé
+"Signals are not meant to have a concept of time"
+
+<https://ngrx.io/guide/signals/faq>
+
 ---
 - tout ce qui nécéssite une annulation, combinaison, ou manipulation temporelle: rxjs
   - client http (progress), websockets, timers, etc
@@ -869,8 +901,8 @@ https://x.com/BenLesh/status/1775207971410039230
 
 - plus simple<!-- .element: class="fragment" -->
 - moins de décorateurs<!-- .element: class="fragment" -->
-- flux de contrôle ( @if, @for, @switch )<!-- .element: class="fragment" -->
 - plus besoin de pipe async et d'unsubscribe<!-- .element: class="fragment" -->
+- plus besoin de mettre des BehaviorSubject PARTOUT<!-- .element: class="fragment" -->
 - ⚠️ ne remplace pas rxjs<!-- .element: class="fragment" -->
 ---
 - Ce n'est pas la mort d'rxjs
@@ -885,15 +917,18 @@ https://x.com/BenLesh/status/1775207971410039230
 - An application would have to fully track its model in signals to completely remove dependency on zone.js.
 - bien pour les nouvelles applis
 - ne migrez pas sans zone.js sans réfléchir, vous allez avoir des problèmes
+- pour avoir migré certaines applis, on gagne 10ko
 
 
 
 ## Comment migrer ?
 
-- ⚠️ encore en developer preview (v18).
+- d'abord monter sur des versions récentes
+- stable en v19<!-- .element: class="fragment" -->
 - mais...<!-- .element: class="fragment" -->
 ---
-Vous pouvez déjà jouer avec et migrer si vous aimez le risque, ou si vous avez un projet perso, mais rien ne dit que ça va pas changer.
+- Vous pouvez déjà jouer avec et migrer si vous aimez le risque, ou si vous avez un projet perso, mais rien ne dit que ça va pas changer.
+- upgrade !== migration
 
 
 ### 1ère étape
@@ -928,7 +963,7 @@ Vous pouvez déjà jouer avec et migrer si vous aimez le risque, ou si vous avez
 
 #### 3ème étape (2)
 
-- ajouter () partout.
+ajouter des `()` partout.
 
 ```diff
 - <p>{{ monInput }}</p>
@@ -952,7 +987,7 @@ sinon:
 
 
 ### 4ème étape
-- mettez vos observables utilisés dans des composants dans des `toSignal`
+- mettez vos observables non-migrés dans des composants dans des `toSignal`
 ---
 - si pas moyen de faire autrement, vous aurez le gain de ne pas avoir à vous désabonner.
 
@@ -966,7 +1001,106 @@ sinon:
 - utilisez @ngrx/signals ou autre lib de gestion d'état.
 
 
-### Angular 18
+### Il y a des schematics pour ça.
+
+```bash
+ng generate @angular/core:signal-input-migration
+ng generate @angular/core:signal-queries-migration
+ng generate @angular/core:output-migration
+```
+---
+- Les schematics c'est fantastique.
+
+
+### Apparté: NGRX
+
+<https://ngrx.io/guide/signals/signal-store>
+---
+- On a toujours besoin d'une lib de gestion d'état
+
+
+### signalStore()
+
+```typescript
+import { signalStore, withState } from '@ngrx/signals';
+import { Book } from './book.model';
+
+type BooksState = {
+  books: Book[];
+  filter: { query: string; order: 'asc' | 'desc' };
+};
+
+const initialState: BooksState = {
+  books: [],
+  filter: { query: '', order: 'asc' },
+};
+
+export const BooksStore = signalStore(
+  withState(initialState)
+);
+```
+---
+- BookStore peut être injecté
+
+
+### withComputed / withMethods
+```typescript
+export const BooksStore = signalStore(
+  withState(initialState),
+  withComputed(({ books, filter }) => ({
+    booksCount: computed(() => books().length),
+    sortedBooks: computed(() => {
+      const direction = filter.order() === 'asc' ? 1 : -1;
+
+      return books().toSorted((a, b) =>
+        direction * a.title.localeCompare(b.title)
+      );
+    }),
+  }))
+);
+```
+
+
+### withMethods 
+```typescript
+export const BooksStore = signalStore(
+  withState(initialState),
+  withComputed(/* ... */),
+  // properties, and methods.
+  withMethods((store) => ({
+    updateQuery(query: string): void {
+      patchState(store, (state) => ({ filter: { ...state.filter, query } }));
+    },
+    updateOrder(order: 'asc' | 'desc'): void {
+      patchState(store, (state) => ({ filter: { ...state.filter, order } }));
+    },
+  }))
+);
+```
+---
+- vous pouvez déclarer des méthodes qui vont modifier votre état.
+- syntaxe proche des reducers redux
+
+
+### à la mano
+```typescript
+@Injectable()
+export class BookStore {
+    books = signal<Book[]>;
+    filter = {
+      query: signal<string>();
+      order: signal<"asc"|"desc">();
+    };
+    sortedBooks = computed<Book[]>(() => {/** */});
+    // etc...
+}
+```
+---
+- Tout ça, c'est juste du sucre syntaxique fonctionnel pour vous générer vos services de gestion d'état
+- Vous pouvez aussi les faire vous même.
+
+
+### Angular 18+ : Zoneless
 
 ```typescript
 bootstrapApplication(App, {
@@ -1004,8 +1138,8 @@ bootstrapApplication(App, {
 
 <img src="quoi-on-dit-des-signaux.jpg">
 ---
-J'en ai terminé,j'espére vous avoir donné un max d'infos pour comprendre les signals et comment les adopter.
-Merci de m'avoir écouté.
+- J'en ai terminé,j'espére vous avoir donné un max d'infos pour comprendre les signals et comment les adopter.
+- Merci de m'avoir écouté.
 
 
 ### Sources
